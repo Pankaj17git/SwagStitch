@@ -11,7 +11,21 @@
   gap: 10px;
 }
 
-.nav-logo p{
+
+.nav-logo-img {
+  height: 48px;
+  width: auto;
+  max-height: 48px;
+  object-fit: contain;
+  display: block;
+}
+
+.navbar {
+  min-height: 64px;
+  align-items: center;
+}
+
+.nav-logo p {
   color: #171717;
   font-size: 38px;
   font-weight: 600;

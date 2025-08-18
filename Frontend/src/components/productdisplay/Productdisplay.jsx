@@ -2,8 +2,10 @@ import React from 'react'
 import './productdisplay.css'
 import star_icon from '../Assets/star_icon.png';
 import star_dull_icon from '../Assets/star_dull_icon.png';
+import { useShopContext } from '../../context/ShopContext';
 const Productdisplay = (props) => {
-  const {product} = props
+  const {product} = props;
+  const {addToCart} = useShopContext();
   return (
     <>
       <div className="productdisplay">
@@ -29,8 +31,8 @@ const Productdisplay = (props) => {
             <p>(122)</p>
           </div>
           <div className="productdisplay-right-prices">
-            <div className="productdisplay-right-price-old">${product.old_price}</div>
-            <div className="productdisplay-right-price-new">${product.new_price}</div>
+            <div className="productdisplay-right-price-old">₹{product.old_price}</div>
+            <div className="productdisplay-right-price-new">₹{product.new_price}</div>
           </div>
           <div className="productdisplay-right-discription">
             Allen Solly Men's Cotton Regular Fit Polo T-Shirt
@@ -45,7 +47,7 @@ const Productdisplay = (props) => {
             <div>XL</div>
             <div>XXL</div>
           </div>
-          <button>ADD TO CART</button>
+          <button onClick={() => {addToCart(product.id)}}>ADD TO CART</button>
           <p className="productdisplay-right-category"><span>Category :</span>Women , T-Shirt, Crop Top</p>
           <p className="productdisplay-right-category"><span>Tags :</span>Modern, Latest</p>
         </div>
