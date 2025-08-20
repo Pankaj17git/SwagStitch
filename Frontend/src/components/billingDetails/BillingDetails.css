@@ -1,0 +1,30 @@
+.billing-container {
+  display: flex;
+  flex: 1;
+}
+.billing-total {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.billing-total h1 {
+  padding-left: 10px;
+  border-left: 5px solid #ff5a5a;
+}
+.billing-total-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 0px;
+}
+.billing-total button {
+  width: 262px;
+  height: 58px;
+  outline: none;
+  border: none;
+  background: #ff5a5a;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}

@@ -1,11 +1,28 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import './productdisplay.css'
 import star_icon from '../Assets/star_icon.png';
 import star_dull_icon from '../Assets/star_dull_icon.png';
 import { useShopContext } from '../../context/ShopContext';
 const Productdisplay = (props) => {
-  const {product} = props;
-  const {addToCart} = useShopContext();
+  const { product } = props;
+  const { addToCart } = useShopContext();
+  const boxRef = useRef(null)
+
+  const HandleHover = (e) => {
+    const { left, top, width, height } = boxRef.current.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100; // % across element
+    const y = ((e.clientY - top) / height) * 100;
+
+    boxRef.current.style.setProperty('--display', 'block');
+    boxRef.current.style.setProperty("--zoom-x", `${x}%`);
+    boxRef.current.style.setProperty("--zoom-y", `${y}%`);
+   
+  }
+
+    const handleMouseLeave = () => {
+    boxRef.current.style.setProperty("--display", "none");
+  };
+
   return (
     <>
       <div className="productdisplay">
@@ -16,7 +33,16 @@ const Productdisplay = (props) => {
             <img src={product.image} alt="" />
             <img src={product.image} alt="" />
           </div>
-          <div className="productdisplay-img">
+          <div className="productdisplay-img"
+            ref={boxRef}
+            onMouseMove={HandleHover}
+            onMouseLeave={handleMouseLeave}
+            style={{
+              '--Url': `url(${product.image})`,
+              '--zoom-x': "0%", '--zoom-y': "0%",
+              '--display': 'none'
+            }}
+          >
             <img className='productdisplay-main-img' src={product.image} alt="" />
           </div>
         </div>
@@ -47,7 +73,7 @@ const Productdisplay = (props) => {
             <div>XL</div>
             <div>XXL</div>
           </div>
-          <button onClick={() => {addToCart(product.id)}}>ADD TO CART</button>
+          <button onClick={() => { addToCart(product.id) }}>ADD TO CART</button>
           <p className="productdisplay-right-category"><span>Category :</span>Women , T-Shirt, Crop Top</p>
           <p className="productdisplay-right-category"><span>Tags :</span>Modern, Latest</p>
         </div>

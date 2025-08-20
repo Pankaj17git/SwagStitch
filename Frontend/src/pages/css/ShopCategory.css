@@ -44,3 +44,21 @@
   font-size: 18px;
   font-weight: 500;
 }
+
+@media screen and (max-width: 1500px) {
+  .shopcategory-products {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .shopcategory-products {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .shopcategory-products {
+    grid-template-columns: 1fr;
+  }
+}

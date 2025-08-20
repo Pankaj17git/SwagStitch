@@ -14,10 +14,32 @@
 .productdisplay-img-list img {
   height: 163px;
 }
-.productdisplay-main-img {
+
+.productdisplay-img {
   width: 586px;
   height: 700px;
+  position: relative;
 }
+.productdisplay-main-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 0 0;
+}
+
+.productdisplay-img::after {
+  display: var(--display);
+  content: '';
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  background-image: var(--Url);
+  background-size: 200%;
+  background-position: var(--zoom-x) var(--zoom-y);
+  position: absolute;
+  top: 0;left: 0;
+}
+
 .productdisplay-right {
   margin:  0px 70px;
   display: flex;

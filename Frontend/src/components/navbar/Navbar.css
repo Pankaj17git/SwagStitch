@@ -13,9 +13,9 @@
 
 
 .nav-logo-img {
-  height: 48px;
+  height: 65px;
   width: auto;
-  max-height: 48px;
+  max-height: 65px;
   object-fit: contain;
   display: block;
 }
@@ -94,4 +94,49 @@
   font-size: 14px;
   background: red;
   color: white;
+}
+
+.hamburger-menu {
+  display: none;
+}
+
+.hidden-menu {
+  transition: transform 1s ease-in-out;
+}
+
+.hidden-menu .nav-menu {
+  gap: 0px;
+}
+.hidden-menu ul {
+  display: flex;
+  margin-top: 1%;
+}
+
+.hidden-menu ul li {
+  flex: 1;
+}
+
+
+@media screen and (max-width: 900px) {
+  .hamburger-menu {
+    display: block;
+  }
+
+  .nav-login-cart button {
+    display: none;
+  }
+
+  .hidden-menu ul {
+    padding: none !important;
+  }
+
+  .nav-list-container{
+    display: none;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .hidden-menu {
+    display: none;
+  }
 }

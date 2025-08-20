@@ -2,12 +2,15 @@
   height: 100vh;
   background: linear-gradient(180deg, #fde1ff, #e1ffea22 60%);
   display: flex;
+  flex-wrap: wrap; /* allow stacking on smaller screens */
+  padding: 20px;
 }
+
 .hero-left {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 20px;
   padding-left: 180px;
   line-height: 1.1;
@@ -24,14 +27,17 @@
   font-size: 100px;
   font-weight: 700;
 }
+
 .hero-hand-icon {
   display: flex;
   align-items: center;
   gap: 20px;
 }
+
 .hero-hand-icon img {
   width: 105px;
 }
+
 .hero-latest-btn {
   display: flex;
   justify-content: center;
@@ -45,15 +51,98 @@
   color: white;
   font-size: 22px;
   font-weight: 500;
+  cursor: pointer;
 }
 
 .hero-right {
   flex: 1;
   display: flex;
   align-items: center;
-  justify-content:  center;
+  justify-content: flex-start;
 }
 
 .hero-right img {
-  height: 100%;
+  max-width: 100%;
+  height: 80%;
+}
+
+/* -------------------- */
+/* ✅ Responsive Breakpoints */
+/* -------------------- */
+
+/* Tablets (≤1024px) */
+@media (max-width: 1024px) {
+  .hero-left {
+    padding-left: 80px;
+  }
+
+  .hero-left p {
+    font-size: 70px;
+  }
+
+  .hero-latest-btn {
+    width: 250px;
+    height: 60px;
+    font-size: 18px;
+  }
+}
+
+/* Mobile (≤768px) */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column; /* stack vertically */
+    height: auto;
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .hero-left {
+    padding-left: 0;
+    align-items: center;
+  }
+
+  .hero-left p {
+    font-size: 48px;
+  }
+
+  .hero-hand-icon {
+    justify-content: center;
+  }
+
+  .hero-hand-icon img {
+    width: 70px;
+  }
+
+  .hero-latest-btn {
+    width: 200px;
+    height: 55px;
+    font-size: 16px;
+  }
+
+  .hero-right {
+    margin-top: 30px;
+  }
+
+  .hero-right img {
+    width: 100%;
+    max-width: 400px; /* keep it reasonable */
+    height: auto;
+  }
+}
+
+/* Small phones (≤480px) */
+@media (max-width: 480px) {
+  .hero-left p {
+    font-size: 36px;
+  }
+
+  .hero-hand-icon img {
+    width: 50px;
+  }
+
+  .hero-latest-btn {
+    width: 160px;
+    height: 50px;
+    font-size: 14px;
+  }
 }
