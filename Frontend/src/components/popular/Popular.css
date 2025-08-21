@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  height: 90vh;
+  height: auto;
 }
 .popular h1 {
   color: #171717;
@@ -21,4 +21,46 @@
   margin-top: 50px;
   display: flex;
   gap: 30px;
+}
+
+@media (max-width: 1024px) {
+  .popular {
+    height: auto;
+  }
+  .popular h1 {
+    font-size: 30px;
+  }
+  .popular hr {
+    width: 120px;
+    height: 3px;
+  }
+  .popular-item {
+    margin-top: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 800px) {
+  .popular h1 {
+    font-size: 20px;
+  }
+  .popular hr {
+    width: 100px;
+  }
+  .popular-item {
+    gap: 15px;
+  }
+}
+
+
+@media (max-width: 500px) {
+  .popular h1 {
+    font-size: 20px;
+  }
+  .popular-item {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 20px;
+  }
 }

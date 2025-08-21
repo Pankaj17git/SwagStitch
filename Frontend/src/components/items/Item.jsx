@@ -1,6 +1,7 @@
 import React from 'react'
 import './Item.css'
-import { Link } from 'react-router'
+import { Link } from 'react-router';
+import dollarToRupees from '../../utils/formatCurrency';
 
 const Item = (props) => {
  
@@ -11,10 +12,10 @@ const Item = (props) => {
         <p>{props.name}</p>
         <div className="item-prices">
           <div className="item-price-new">
-            ₹{props.new_price}
+            ₹{dollarToRupees(props.new_price, 60)}
           </div>
           <div className="item-price-old">
-            ₹{props.old_price}
+            ₹{dollarToRupees(props.old_price, 60)}
           </div>
         </div>
       </div>

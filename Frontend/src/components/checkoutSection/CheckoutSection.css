@@ -63,7 +63,7 @@
 .saved-addresses {
   margin-top: 20px;
   display: grid;
-  grid-template-columns: 1fr ; 
+  grid-template-columns: repeat(2,1fr) ; 
   gap: 20px;
 }
 
@@ -114,6 +114,99 @@
   flex: 1;
   position: relative;
 }
+
+/* Delivery Method Section */
+.delivery-method {
+  margin-top: 30px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.05);
+}
+
+.delivery-method h4 {
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2e2e2e;
+}
+
+.delivery-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.delivery-options label {
+  font-size: 15px;
+  color: #444;
+  cursor: pointer;
+}
+
+.delivery-options input {
+  margin-right: 10px;
+  accent-color: #ff5a5a;
+}
+
+.delivery-charge {
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+  font-size: 15px;
+  color: #333;
+  font-weight: 500;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 1024px) {
+  .section-container {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .right-section {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-container {
+    padding: 5%;
+  }
+
+  .address {
+    height: 60px;
+    font-size: 14px;
+  }
+
+  .delivery-method h4 {
+    font-size: 1rem;
+  }
+
+  .delivery-options label {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .saved-addresses {
+    grid-template-columns: 1fr;
+  }
+
+  .delivery-method {
+    padding: 15px;
+  }
+
+  .delivery-charge {
+    font-size: 14px;
+  }
+
+  .select-btn {
+    width: 100%;
+  }
+}
+
 
 
 

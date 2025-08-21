@@ -106,6 +106,7 @@
 
 .hidden-menu .nav-menu {
   gap: 0px;
+  padding: 0px;
 }
 .hidden-menu ul {
   display: flex;
@@ -116,14 +117,33 @@
   flex: 1;
 }
 
+@media screen and (max-width: 1280px) {
+  .navbar{
+    padding: 12px 50px;
+  }
+
+}
 
 @media screen and (max-width: 900px) {
   .hamburger-menu {
     display: block;
   }
 
+  .nav-login-cart img {
+    height: 30px;
+  }
+
+  .nav-cart-count {
+    width: 20x;
+    height: 20px;
+  }
+
   .nav-login-cart button {
     display: none;
+  }
+
+  .nav-logo-img{
+    max-height: 45px;
   }
 
   .hidden-menu ul {

@@ -38,7 +38,7 @@ const CartItems = () => {
         })}
 
         <div className='cartitems-down'>
-          <BillingDetails path='checkout' label='CHECKOUT'/>
+          <BillingDetails deliveryCharge={'Free'} shipping path='checkout' label='CHECKOUT'/>
           <div className="cartitems-promocode">
             <p>If you have a promo code, Enter it here</p>
             <div className="cartitems-promobox">
