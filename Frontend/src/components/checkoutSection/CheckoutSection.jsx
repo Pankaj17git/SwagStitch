@@ -5,6 +5,9 @@ import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
 import ShippingForm from '../shippingForm/ShippingForm'
 import { useShopContext } from '../../context/ShopContext'
+import DialogTitle from '@mui/material/DialogTitle'
+import IconButton from '@mui/material/IconButton'
+import CloseIcon from '@mui/icons-material/Close';
 
 const CheckoutSection = () => {
   const [openAddress, setOpenAddress] = useState(false);
@@ -98,6 +101,16 @@ const CheckoutSection = () => {
         {/* ADD ADDRESS DIALOG */}
         <Dialog open={openAddress} onClose={() => setOpenAddress(false)} maxWidth="sm" fullWidth>
           <DialogContent>
+            <div >
+              <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                sx={{ mr: 2, padding: 0 }}>
+                <CloseIcon />
+              </IconButton>
+            </div>
             <ShippingForm onClose={() => setOpenAddress(false)} />
           </DialogContent>
         </Dialog>
