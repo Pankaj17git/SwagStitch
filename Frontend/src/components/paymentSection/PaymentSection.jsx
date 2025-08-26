@@ -3,12 +3,12 @@ import BillingDetails from '../billingDetails/BillingDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState } from 'react';
 
+
 const PaymentSection = () => {
   const [active, setActive] = useState(null);
 
   const toggleSection = (id) => {
     setActive(active === id ? null : id);
-
   }
 
   return (
@@ -39,7 +39,39 @@ const PaymentSection = () => {
               {
                 active === 'Wallets' && (
                   <div className="payment-options">
-                    <h1>Hello</h1>
+                    <div className='payment-method-row'>
+                      <div className="payment-info">
+                        <div>
+                          <img src="./paytem.png" alt="" style={{ height: '24px', width: 'auto' }} />
+                        </div>
+                        <span>Paytem</span>
+                      </div>
+                      <div className="payment-select">
+                        <input type="radio" name="payment" />
+                      </div>
+                    </div>
+                    <div className='payment-method-row'>
+                      <div className="payment-info">
+                        <div>
+                          <img src="./googlePay.png" alt="" style={{ height: '24px', width: 'auto' }} />
+                        </div>
+                        <span>GooglePay</span>
+                      </div>
+                      <div className="payment-select">
+                        <input type="radio" name="payment" />
+                      </div>
+                    </div>
+                    <div className='payment-method-row'>
+                      <div className="payment-info">
+                        <div>
+                          <img src="./phonePay.png" alt="" style={{ height: '24px', width: 'auto' }} />
+                        </div>
+                        <span>PhonePe</span>
+                      </div>
+                      <div className="payment-select">
+                        <input type="radio" name="payment" />
+                      </div>
+                    </div>
                   </div>
                 )
               }
@@ -53,7 +85,7 @@ const PaymentSection = () => {
               {
                 active === 'Credit' && (
                   <div className="payment-options">
-                    <h1>Hello</h1>
+                    Hello!
                   </div>
                 )
               }
@@ -67,7 +99,39 @@ const PaymentSection = () => {
               {
                 active === 'Netbanking' && (
                   <div className="payment-options">
-                    <h1>Hello</h1>
+                    <div className='payment-method-row'>
+                      <div className="payment-info">
+                        <div>
+                          <img src="./bank1.png" alt="" style={{ height: '24px', width: 'auto' }} />
+                        </div>
+                        <span>AXIS</span>
+                      </div>
+                      <div className="payment-select">
+                        <input type="radio" name="payment" />
+                      </div>
+                    </div>
+                    <div className='payment-method-row'>
+                      <div className="payment-info">
+                        <div>
+                          <img src="./bank2.png" alt="" style={{ height: '24px', width: 'auto' }} />
+                        </div>
+                        <span>SBI</span>
+                      </div>
+                      <div className="payment-select">
+                        <input type="radio" name="payment" />
+                      </div>
+                    </div>
+                    <div className='payment-method-row'>
+                      <div className="payment-info">
+                        <div>
+                          <img src="./bank3.png" alt="" style={{ height: '24px', width: 'auto' }} />
+                        </div>
+                        <span>HDFC</span>
+                      </div>
+                      <div className="payment-select">
+                        <input type="radio" name="payment" />
+                      </div>
+                    </div>
                   </div>
                 )
               }

@@ -78,28 +78,63 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
+  padding: 12px 0px;
   cursor: pointer;
 }
 
 .payment-options {
-  padding: 12px 16px;
   border-top: 1px solid #eee;
   background: #f9f9f9;
+}
+
+.payment-method-row {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  margin: 20px 0px;
+  font-size: 13px;
+}
+
+.payment-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.payment-info div {
+  border: 0;
+  border-radius: 50%;
+  padding: 0;
+  margin: 0;
+  width: 40px;
+  height: 40px;
+  margin-right: 18px;
+  box-shadow: 0 0 5px #d9caca;
+  overflow: hidden;
+}
+
+.payment-info div img {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+.payment-card span {
+  font-weight: 500;
+  color: #504f4f;
 }
 
 .payment-card label {
   width: 100%;
 }
 
-.payment-card label img,span:hover {
+.payment-card label img,
+span:hover {
   cursor: pointer;
   color: #ff5a5a;
 }
 
 
 .payment-card input[type="radio"] {
-  margin-right: 18px;
   float: right;
   height: 20px;
   width: 20px;
@@ -110,9 +145,6 @@
   width: 30px;
 }
 
-.payment-card:hover {
-  border-color: #000;
-}
 
 .payment-card.collapsible {
   font-weight: 500;
