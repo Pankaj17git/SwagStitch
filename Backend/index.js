@@ -14,9 +14,10 @@ app.use(cors());
 //conect to our database
 connectToDB();
 
+//Api creation 
 
-app.get("/", (req, res) => {
-  res.send("Express app is running!")
+app.get('/', (req, res) => {
+  res.send('Express app is running!')
 })
 
 //Image Storage Engine
@@ -39,12 +40,10 @@ app.post("/upload", upload.single('product'), (req, res) => {
 });
 
 
-//api creation 
 app.listen(PORT, (error) => {
   if(!error) {
     console.log("Server Running on Port",PORT); 
   } else {
     console.log('Error', error);
-    
   }
 })

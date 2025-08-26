@@ -2,6 +2,7 @@ import React, { useRef } from 'react'
 import './productdisplay.css'
 import star_icon from '../Assets/star_icon.png';
 import star_dull_icon from '../Assets/star_dull_icon.png';
+import dollarToRupees from '../../utils/formatCurrency';
 import { useShopContext } from '../../context/ShopContext';
 const Productdisplay = (props) => {
   const { product } = props;
@@ -57,8 +58,8 @@ const Productdisplay = (props) => {
             <p>(122)</p>
           </div>
           <div className="productdisplay-right-prices">
-            <div className="productdisplay-right-price-old">₹{product.old_price}</div>
-            <div className="productdisplay-right-price-new">₹{product.new_price}</div>
+            <div className="productdisplay-right-price-old">₹{dollarToRupees(product.old_price, 60)}</div>
+            <div className="productdisplay-right-price-new">₹{dollarToRupees(product.new_price, 60)}</div>
           </div>
           <div className="productdisplay-right-discription">
             Allen Solly Men's Cotton Regular Fit Polo T-Shirt

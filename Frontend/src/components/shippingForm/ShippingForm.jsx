@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./ShippingForm.css";
 import { useShopContext } from "../../context/ShopContext";
+import { v4 as uuidv4 } from 'uuid';
+
 
 const ShippingForm = ({onClose}) => {
   const { addAddress } = useShopContext();
@@ -27,7 +29,7 @@ const ShippingForm = ({onClose}) => {
 
     const newAddress = {
       ...formData,
-      id: Math.round((Math.random() * 100))
+      id: uuidv4()
     }
 
     addAddress(newAddress)

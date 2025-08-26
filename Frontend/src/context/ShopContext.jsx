@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from "react"
+import dollarToRupees from "../utils/formatCurrency";
 import all_product from "../components/Assets/all_product";
 
 const ShopContext = createContext(null);
@@ -32,7 +33,7 @@ const ShopContexProvider = (props) => {
         totalAmount += itemInfo.new_price * cartItems[item]
       }
     }
-    return totalAmount;
+    return dollarToRupees(totalAmount, 60);
   }
 
   const getTotalCartItem = () => {

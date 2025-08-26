@@ -5,13 +5,14 @@ import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
 import ShippingForm from '../shippingForm/ShippingForm'
 import { useShopContext } from '../../context/ShopContext'
-import DialogTitle from '@mui/material/DialogTitle'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close';
 
 const CheckoutSection = () => {
   const [openAddress, setOpenAddress] = useState(false);
   const { addresses } = useShopContext();
+  console.log(addresses);
+  
 
   // State for delivery method
   const [deliveryMethod, setDeliveryMethod] = useState("standard");
@@ -94,7 +95,7 @@ const CheckoutSection = () => {
 
           {/* RIGHT SIDE */}
           <div className="right-section">
-            <BillingDetails path='payment' label='PAYMENT' deliveryCharge={deliveryCharge} />
+            <BillingDetails path='payment' label='PROCEED TO PAYMENT' deliveryCharge={deliveryCharge} />
           </div>
         </div>
 
@@ -107,7 +108,9 @@ const CheckoutSection = () => {
                 edge="start"
                 color="inherit"
                 aria-label="menu"
-                sx={{ mr: 2, padding: 0 }}>
+                sx={{ mr: 2, padding: 0 }}
+                onClick={() => setOpenAddress(false)}
+                >
                 <CloseIcon />
               </IconButton>
             </div>

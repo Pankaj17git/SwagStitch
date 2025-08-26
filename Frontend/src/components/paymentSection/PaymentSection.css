@@ -1,0 +1,146 @@
+.main-container {
+  padding: 5% 15%;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.address-container {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  padding: 5px 0px 5px 10px;
+}
+
+.address-container h5 {
+  margin: 1% 0px;
+  color: #ff5a5a;
+}
+
+.address-container p {
+  margin-bottom: 1%;
+}
+
+.address-container button {
+  margin-left: auto;
+  margin-right: 2%;
+  color: #ff5a5a;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  background: none;
+
+}
+
+.section-container {
+  display: flex;
+  gap: 20px;
+}
+
+.left-section {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.right-section {
+  flex: 1;
+}
+
+.left-section h5 {
+  color: #5c5c5c;
+  font-size: 15px;
+}
+
+.right-section p {
+  margin-bottom: 2%;
+  font-size: 15px;
+  color: #666;
+  font-weight: 500;
+}
+
+.right-section .payment-container {
+  border: 1px solid #ddd;
+  padding: 16px;
+  border-radius: 6px;
+  background: #fafafa;
+}
+
+.payment-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 12px 16px;
+  border-radius: 6px;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  cursor: pointer;
+}
+
+.payment-options {
+  padding: 12px 16px;
+  border-top: 1px solid #eee;
+  background: #f9f9f9;
+}
+
+.payment-card label {
+  width: 100%;
+}
+
+.payment-card label img,span:hover {
+  cursor: pointer;
+  color: #ff5a5a;
+}
+
+
+.payment-card input[type="radio"] {
+  margin-right: 18px;
+  float: right;
+  height: 20px;
+  width: 20px;
+}
+
+.payment-card img {
+  height: 30px;
+  width: 30px;
+}
+
+.payment-card:hover {
+  border-color: #000;
+}
+
+.payment-card.collapsible {
+  font-weight: 500;
+}
+
+.payment-card .arrow {
+  font-size: 14px;
+  color: #444;
+  transition: 0.5s all ease-in-out;
+}
+
+.payment-card .arrowActive {
+  transform: rotate(180deg);
+  transition: 0.5s all ease-in-out;
+}
+
+/* .payment-card.disabled {
+  color: #999;
+  cursor: not-allowed;
+  background: #f9f9f9;
+}
+
+.payment-card.disabled input {
+  cursor: not-allowed;
+} */
+
+.payment-card .note {
+  font-size: 12px;
+  color: #666;
+  /* align under text */
+}

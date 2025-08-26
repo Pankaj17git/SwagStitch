@@ -1,6 +1,7 @@
 import React from 'react'
 import { useShopContext } from '../../context/ShopContext'
 import './BillingDetails.css'
+import getDiscount from '../../utils/discount'
 import { useNavigate } from 'react-router'
 
 const BillingDetails = (props) => {
@@ -9,8 +10,7 @@ const BillingDetails = (props) => {
   const {getTotalCartAmount} = useShopContext();
   const shippingFee =  props.deliveryCharge === 'Free' ? 0 : props.deliveryCharge ;
   const subTotal = getTotalCartAmount();
-  const total = subTotal + shippingFee
-
+  const discountResult = getDiscount(subTotal)
   const handleCheckout = () => {
     navigate(`/${props.path}`)
   }
@@ -19,7 +19,6 @@ const BillingDetails = (props) => {
     <>
       <div className="billing-container">
         <div className="billing-total">
-          <h1>Cart Totals</h1>
           <div>
             <div className="billing-total-item">
               <p>Subtotal</p>
@@ -32,11 +31,16 @@ const BillingDetails = (props) => {
             </div>
             <hr />
             <div className="billing-total-item">
+              <p>Discount</p>
+              <p>{discountResult.discountPercentage}%</p>
+            </div>
+            <hr />
+            <div className="billing-total-item">
               <h3>Total</h3>
-              <h3>₹{total}</h3>
+              <h3>₹{discountResult.discountedPrice + shippingFee}</h3>
             </div>
           </div>
-          <button onClick={handleCheckout}>PROCEED TO {props.label}</button>
+          <button onClick={handleCheckout}>{props.label}</button>
         </div>
       </div>
     </>

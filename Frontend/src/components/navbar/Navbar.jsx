@@ -11,10 +11,8 @@ import { useShopContext } from '../../context/ShopContext';
 const Navbar = () => {
 
   const [menu, setmenu] = useState("shop");
-  const [isVisible, setIsVisible] = useState(false);
+  const [isToggle, setToggle] = useState(false);
   const {getTotalCartItem} = useShopContext();
-
-
 
   return (
     <>
@@ -26,7 +24,7 @@ const Navbar = () => {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2  }}>
-            <MenuIcon onClick={() => setIsVisible(!isVisible)}/>
+            <MenuIcon onClick={() => setToggle(!isToggle)}/>
           </IconButton>
         </div>
         <div className="nav-logo">
@@ -47,7 +45,7 @@ const Navbar = () => {
         </div>
       </div>
       {
-        isVisible && (
+        isToggle && (
           <div className="hidden-menu">
             <ul className="nav-menu">
               <li style={{ borderRight: '2px solid gray' }} onClick={() => { setmenu("shop") }}><Link style={{ textDecoration: 'none' }} to='/'>Shop</Link> {menu === "shop" ? <hr /> : <></>}</li>

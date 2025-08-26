@@ -1,8 +1,9 @@
 function dollarToRupees(dollars, rate = 83) {
-  if (typeof dollars !== "number" || dollars < 0) {
+  let amount = Math.round(dollars)
+  if (typeof amount !== "number" || amount < 0) {
     throw new Error("Please provide a valid positive number.");
   }
-  return dollars * rate;
+  return amount * rate;
 }
 
 export default dollarToRupees;
