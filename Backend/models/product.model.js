@@ -30,6 +30,10 @@ const ProductSchema = mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    quantity: {
+      type: Number,
+      required: true
+    },
     available: {
       type: Boolean,
       default: true

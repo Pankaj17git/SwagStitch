@@ -18,7 +18,6 @@ const ShopContexProvider = (props) => {
   const [addresses, setAddresses] = useState([]);
 
   const addToCart = (itemId) => {
-    debugger;
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
   }
 
@@ -28,7 +27,7 @@ const ShopContexProvider = (props) => {
 
   const getTotalCartAmount = () => {
     let totalAmount = 0;
-    for (const item in cartItems) {
+    for (const item in cartItems) { 
       if (cartItems[item] > 0) {
         let itemInfo = all_product.find((product) => product.id === Number(item));
         totalAmount += itemInfo.new_price * cartItems[item]
