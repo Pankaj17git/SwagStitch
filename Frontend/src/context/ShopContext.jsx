@@ -18,6 +18,7 @@ const ShopContexProvider = (props) => {
   const [addresses, setAddresses] = useState([]);
 
   const addToCart = (itemId) => {
+    debugger;
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
   }
 

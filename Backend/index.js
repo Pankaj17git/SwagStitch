@@ -2,7 +2,6 @@ const PORT = 4000;
 const express = require('express');
 const app = express()
 const connectToDB = require('./config/connectToDb')
-const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const path = require('path');
 const cors = require('cors');
@@ -10,7 +9,8 @@ const { error, log } = require('console');
 const { default: mongoose } = require('mongoose');
 const { type } = require('os');
 const { deflate } = require('zlib');
-const productRoute = require('./routes/product.route.js')
+const productRoute = require('./routes/product.route.js');
+const userRoute = require('./routes/user.route.js')
 
 app.use(express.json());
 app.use(cors());
@@ -23,6 +23,15 @@ connectToDB();
 app.get('/', (req, res) => {
   res.send('Express app is running!')
 })
+
+
+// Routes-------------
+
+//Product routes
+app.use('/products', productRoute);
+
+// User SingUp
+app.use('/user', userRoute)
 
 //Image Storage Engine
 const storage = multer.diskStorage({
@@ -43,9 +52,6 @@ app.post("/upload", upload.single('product'), (req, res) => {
     image_url: `http://localhost:${PORT}/images/${req.file.filename}`
   })
 });
-
-// Routes
-app.use('/products', productRoute);
 
 
 app.listen(PORT, (error) => {
