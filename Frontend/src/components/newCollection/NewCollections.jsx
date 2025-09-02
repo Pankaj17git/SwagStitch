@@ -1,8 +1,22 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './NewCollection.css';
-import new_collecton from '../Assets/new_collections';
 import Item from '../items/Item';
+import axios from 'axios'
 const NewCollections = () => {
+  const [new_collections, setNew_collection] = useState([]);
+
+   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/products/newcollections");
+        setNew_collection(res.data);
+      } catch (error) {
+        console.error("Error fetching new collections:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <>
       <div className="new-collections">
@@ -10,7 +24,7 @@ const NewCollections = () => {
         <hr />
         <div className="collections">
           {
-            new_collecton.map((item, i) => {
+            new_collections.map((item, i) => {
               return <Item key={i} id={item.id} name={item.name} image={item.image} new_price={item.new_price} old_price={item.old_price} />
             })
           }  

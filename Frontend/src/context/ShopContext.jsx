@@ -1,12 +1,12 @@
-import React, { createContext, useContext, useState } from "react"
+import React, { createContext, useContext, useEffect, useState } from "react"
 import dollarToRupees from "../utils/formatCurrency";
-import all_product from "../components/Assets/all_product";
+// import axios from 'axios'
 
 const ShopContext = createContext(null);
 
 const getDefaultCart = () => {
   let cart = {};
-  for (let i = 0; i < all_product.length; i++) {
+  for (let i = 0; i < 300 + 1; i++) {
     cart[i] = 0;
   }
   return cart;
@@ -14,11 +14,33 @@ const getDefaultCart = () => {
 
 const ShopContexProvider = (props) => {
 
+  const [all_product, setAll_Product] = useState([]);
   const [cartItems, setCartItems] = useState(getDefaultCart());
   const [addresses, setAddresses] = useState([]);
 
+  useEffect(() => {
+    fetch('http://localhost:4000/products')
+      .then((res) => res.json())
+      .then((data) => setAll_Product(data))
+  }, []);
+
   const addToCart = (itemId) => {
-    setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
+    setCartItems((prev) => ({
+      ...prev,
+      [itemId]: prev[itemId] + 1
+    }));
+    if (localStorage.getItem('auth-token')) {
+      fetch('http://localhost:4000/cart/add', {
+        method: "POST",
+        headers: {
+          Accept: "application/form-data",
+          'auth-token': `${localStorage.getItem("auth-token")}`,
+          'Content-Type': "application/json"
+        },
+        body: JSON.stringify({ "itemId": itemId }),
+      }).then((res) => res.json()).
+        then((data) => console.log(data))
+    }
   }
 
   const removeFromCart = (itemId) => {
@@ -27,7 +49,7 @@ const ShopContexProvider = (props) => {
 
   const getTotalCartAmount = () => {
     let totalAmount = 0;
-    for (const item in cartItems) { 
+    for (const item in cartItems) {
       if (cartItems[item] > 0) {
         let itemInfo = all_product.find((product) => product.id === Number(item));
         totalAmount += itemInfo.new_price * cartItems[item]

@@ -21,10 +21,6 @@ const userSignUp = async (req, res) => {
     password: req.body.password,
     cartData: cart,
   });
-
-  console.log(user);
-  
-
   await user.save();
 
   const data = {
