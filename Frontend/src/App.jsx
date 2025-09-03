@@ -11,6 +11,10 @@ import kid_banner from './components/Assets/banner_kids.png'
 import women_banner from './components/Assets/banner_women.png'
 import Checkout from './pages/Checkout'
 import Payment from './pages/Payment'
+import AdminLayout from './layout/AdminLayout'
+import ListProduct from './components/admin/listProduct/Listproduct'
+import Addproduct from './components/admin/addProducts/Addproduct'
+import ProtectedRoutes from './routes/ProtectedRoutes'
 
 
 function App() {
@@ -30,6 +34,14 @@ function App() {
           <Route path='/checkout' element={<Checkout/>}/>
           <Route path='/payment' element={<Payment/>}/>
           <Route path='/login' element={<LoginSignUp/>}/>
+
+          {/* Admin Routes */}
+
+          <Route path='/admin' element={<ProtectedRoutes><AdminLayout/></ProtectedRoutes>}>
+            <Route index element={<Addproduct/>}/>
+            <Route path='addproduct' element={<Addproduct/>}/>
+            <Route path='productlist' element={<ListProduct/>}/>
+          </Route>
         </Routes>
         <Footer/>
       </BrowserRouter>

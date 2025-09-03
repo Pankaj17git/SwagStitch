@@ -5,15 +5,15 @@ import Offers from '../components/offers/Offers'
 import NewCollections from '../components/newCollection/NewCollections'
 import Newsletter from '../components/newsLetter/Newsletter'
 
-
 const Shop = () => {
+
   return (
     <>
-      <Hero/>
-      <Popular/>
-      <Offers/>
-      <NewCollections/>
-      <Newsletter/>
+      <Hero />
+      <Popular />
+      <Offers />
+      <NewCollections />
+      <Newsletter />
     </>
   )
 }

@@ -4,10 +4,10 @@ const jwt = require('jsonwebtoken');
 
 const userSignUp = async (req, res) => {
 
-  let check = await User.findOne({email: req.body.email});
+  let check = await User.findOne({ email: req.body.email });
 
   if (check) {
-    return res.status(404).json({success: false, error: "Existng user with the same email Please use a different one"})
+    return res.status(404).json({ success: false, error: "Existng user with the same email Please use a different one" })
   }
 
   let cart = {};
@@ -29,15 +29,14 @@ const userSignUp = async (req, res) => {
     }
   }
 
-  const token = jwt.sign(data,'secret_ecom');
-  res.json({success: true, token})
+  const token = jwt.sign(data, 'secret_ecom');
+  res.json({ success: true, token:token, user: user })
 }
 
 const userLogin = async (req, res) => {
-  console.log(req.body);
-  let user = await User.findOne({email: req.body.email});
-  
-  if(user) {
+  let user = await User.findOne({ email: req.body.email });
+
+  if (user) {
     const passCompare = req.body.password === user.password;
     if (passCompare) {
       const data = {
@@ -46,16 +45,85 @@ const userLogin = async (req, res) => {
         }
       }
       const token = jwt.sign(data, 'secret_ecom');
-      res.json({success: true, token});
+      res.json({ success: true, token:token, user: user});
     }
     else {
-      res.json({success: false, error: 'Wrong Password!'})
+      res.json({ success: false, error: 'Wrong Password!' })
     }
   } else {
-    res.json({success: false, error: "Wrong Email Id!"})
+    res.json({ success: false, error: "Wrong Email Id!" })
+  }
+}
+
+const addAddress = async (req, res) => {
+  try {
+    const newAddress = req.body;
+    let { id } = req.params;
+
+    let user = await User.findById(id);
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    user.addresses.push(newAddress);
+    await user.save();
+
+    res.status(201).json(user.addresses);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+const updateAddress = async (req, res) => {
+  try {
+    let { id, addressId } = req.params;
+    const updatedFields = req.body;
+
+    let user = await User.findById(id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const address = user.addresses.id(addressId);
+    if (!address) return res.status(404).json({ message: "Address not found" });
+
+    Object.assign(address, updatedFields);
+    await user.save();
+
+    res.json(user.addresses);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+
+const getAddress = async (req, res) => {
+  try {
+    const { id } = req.params;
+    let user = await User.findById(id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.send(user.addresses);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+
+const deleteAddress = async (req, res) => {
+  try {
+    let { id, addressId } = req.params;
+    let user = await User.findById(id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    user.addresses = user.addresses.filter((addr) => addr._id.toString() !== addressId);
+
+    await user.save();
+    res.json(user.addresses);
+  } catch (error) {
+    res.status(500).json({ error: err.message });
   }
 }
 
 module.exports = {
-  userSignUp, userLogin
+  userSignUp, userLogin,
+  addAddress, updateAddress,
+  deleteAddress, getAddress
 }

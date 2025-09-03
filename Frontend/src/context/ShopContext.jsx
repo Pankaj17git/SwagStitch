@@ -21,7 +21,20 @@ const ShopContexProvider = (props) => {
   useEffect(() => {
     fetch('http://localhost:4000/products')
       .then((res) => res.json())
-      .then((data) => setAll_Product(data))
+      .then((data) => setAll_Product(data));
+
+    if (localStorage.getItem('auth-token')) {
+      fetch('http://localhost:4000/cart/', {
+        method: "POST",
+        headers: {
+          Accept: "application/form-data",
+          'auth-token': `${localStorage.getItem("auth-token")}`,
+          'Content-Type': "application/json"
+        },
+        body: ""
+      }).then((res) => res.json())
+        .then((data) => setCartItems(data))
+    }
   }, []);
 
   const addToCart = (itemId) => {
@@ -44,7 +57,19 @@ const ShopContexProvider = (props) => {
   }
 
   const removeFromCart = (itemId) => {
-    setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }))
+    setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
+
+    if (localStorage.getItem('auth-token')) {
+      fetch('http://localhost:4000/cart/removefromcart', {
+        method: "POST",
+        headers: {
+          Accept: "application/form-data",
+          'auth-token': `${localStorage.getItem("auth-token")}`,
+          'Content-Type': "application/json"
+        },
+        body: JSON.stringify({ "itemId": itemId})
+      }).then((res) => res.json())
+    }
   }
 
   const getTotalCartAmount = () => {
@@ -52,7 +77,7 @@ const ShopContexProvider = (props) => {
     for (const item in cartItems) {
       if (cartItems[item] > 0) {
         let itemInfo = all_product.find((product) => product.id === Number(item));
-        totalAmount += itemInfo.new_price * cartItems[item]
+        totalAmount += itemInfo.new_price * cartItems[item];
       }
     }
     return dollarToRupees(totalAmount, 60);
