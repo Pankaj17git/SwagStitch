@@ -6,86 +6,136 @@ import { useForm } from 'react-hook-form'
 
 const LoginSignUp = () => {
   const [state, setState] = useState("Sign Up");
-  const  { authLogin } = useAuth();
-  const { register, handleSubmit, handleState: {errors} } = useForm();
+  const { authLogin } = useAuth();
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
-
-
-  const handleChange = (e) => {
-    setFormData({...formData, [e.target.name]:e.target.value})
-  }
 
   // Handle form submission 
-
-  const login = async () => {
-
+  const onSubmit = async (data) => {
     let responseData;
-    await fetch('http://localhost:4000/user/login', {
+    const url = state === "Login"
+      ? 'http://localhost:4000/user/login'
+      : 'http://localhost:4000/user/signup';
+
+    await fetch(url, {
       method: 'POST',
       headers: {
         Accept: 'application/form-data',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(formData),
-    }).then((response) => response.json()).then((data) => responseData = data)
-    
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => responseData = data);
 
     if (responseData.success) {
-      authLogin(responseData);
-      window.location.replace("/")
-    }
-    else {
+      if (state === "Login") {
+        authLogin(responseData);
+      } else {
+        localStorage.setItem('auth-token', responseData.token);
+        localStorage.setItem('auth-user', JSON.stringify(responseData.user));
+      }
+      window.location.replace("/");
+    } else {
       alert(responseData.error)
     }
   }
 
-  const signUp = async () => {  
-    let responseData;
-    await fetch('http://localhost:4000/user/signup', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/form-data',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData),
-    }).then((response) => response.json()).then((data) => responseData = data)
+  // const login = async () => {
 
-    if (responseData.success) {
-      localStorage.setItem('auth-token', responseData.token);
-      localStorage.setItem('auth-user', JSON.stringify(responseData.user));
-      window.location.replace("/")
-    }
-    else {
-      alert(responseData.error)
-    }
-  }
+  //   let responseData;
+  //   await fetch('http://localhost:4000/user/login', {
+  //     method: 'POST',
+  //     headers: {
+  //       Accept: 'application/form-data',
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(formData),
+  //   }).then((response) => response.json()).then((data) => responseData = data)
+
+
+  //   if (responseData.success) {
+  //     authLogin(responseData);
+  //     window.location.replace("/")
+  //   }
+  //   else {
+  //     alert(responseData.error)
+  //   }
+  // }
+
+  // const signUp = async () => {
+  //   let responseData;
+  //   await fetch('http://localhost:4000/user/signup', {
+  //     method: 'POST',
+  //     headers: {
+  //       Accept: 'application/form-data',
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(formData),
+  //   }).then((response) => response.json()).then((data) => responseData = data)
+
+  //   if (responseData.success) {
+  //     localStorage.setItem('auth-token', responseData.token);
+  //     localStorage.setItem('auth-user', JSON.stringify(responseData.user));
+  //     window.location.replace("/")
+  //   }
+  //   else {
+  //     alert(responseData.error)
+  //   }
+  // }
 
   return (
     <>
       <div className="loginsignup">
         <div className="loginsignup-container">
           <h1>{state}</h1>
-          <div className="loginsignup-fields">
-            {state === "Sign Up" 
-              ? <input name='username' value={formData.username} onChange={handleChange} type="text" placeholder='Your Name' required /> 
-              : <></>
-            }
-            <input name='email' value={formData.email} onChange={handleChange}  type="email" placeholder='Email Address' required />
-            <input name='password' value={formData.password} onChange={handleChange} type="password" placeholder='Password' required />
-          </div>
-          <button onClick={() => {state === "Login" ? login() : signUp();}}>Continue</button>
-          {state === "Sign Up" 
-            ? <p className="loginsignup-login">Already have an account? <span onClick={() => {setState("Login")}}>Login here</span></p>
-            : <p className="loginsignup-login">Create an account? <span onClick={() => {setState("Sign Up")}}>Click here</span></p>
+          <form className="loginsignup-fields" onSubmit={handleSubmit(onSubmit)}>
+            <div>
+              {state === "Sign Up" && (
+                <>
+                  <input
+                    {...register('username', { required: 'Name is required' })}
+                    type="text"
+                    placeholder='Your Name' />
+                  {errors.username && (<p className="error">{errors.username.message}</p>)}
+                </>
+              )}
+            </div>
+            
+            <div>
+              <input
+                {...register('email', { required: 'Email is required', pattern: { value: /^\S+@\S+$/i, message: "Invalid email" } })}
+                type="email"
+                placeholder='Email Address' />
+              {errors.email && (<p className='error'>{errors.email.message}</p>)}
+            </div>
+
+            <div>
+              <input {...register('password', {
+                required: 'Password is required',
+                minLength: { value: 6, message: "Min 6 characters" }
+              })}
+                type="password"
+                placeholder="Password"
+              />
+              {errors.password && (<p className="error">{errors.password.message}</p>)}
+            </div>
+
+            <button type="submit">Continue</button>
+          </form>
+
+          {state === "Sign Up"
+            ? <p className="loginsignup-login">Already have an account? <span onClick={() => { setState("Login") }}>Login here</span></p>
+            : <p className="loginsignup-login">Create an account? <span onClick={() => { setState("Sign Up") }}>Click here</span></p>
           }
-          
+
           <div className="loginsignup-agree">
             <input type="checkbox" name="" id="" />
             <p>By continuing, i agree to the terms of use & privacy policy.</p>
           </div>
         </div>
       </div>
-    </> 
+    </>
   )
 }
 

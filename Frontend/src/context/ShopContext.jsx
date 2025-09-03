@@ -16,7 +16,6 @@ const ShopContexProvider = (props) => {
 
   const [all_product, setAll_Product] = useState([]);
   const [cartItems, setCartItems] = useState(getDefaultCart());
-  const [addresses, setAddresses] = useState([]);
 
   useEffect(() => {
     fetch('http://localhost:4000/products')
@@ -93,14 +92,11 @@ const ShopContexProvider = (props) => {
     return totalItem;
   }
 
-  const addAddress = (newAddress) => {
-    setAddresses((prev) => [...prev, newAddress]);
-  };
+
 
   const contextValue = {
     all_product, cartItems, addToCart, removeFromCart,
-    getTotalCartAmount, getTotalCartItem, addAddress,
-    addresses
+    getTotalCartAmount, getTotalCartItem,
   };
   return (
     <>

@@ -4,15 +4,13 @@ import './CheckoutSection.css'
 import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
 import ShippingForm from '../shippingForm/ShippingForm'
-import { useShopContext } from '../../context/ShopContext'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close';
+import { useAuth } from '../../context/AuthContext'
 
 const CheckoutSection = () => {
   const [openAddress, setOpenAddress] = useState(false);
-  const { addresses } = useShopContext();
-  console.log(addresses);
-  
+  const { addresses } = useAuth();
 
   // State for delivery method
   const [deliveryMethod, setDeliveryMethod] = useState("standard");
@@ -43,10 +41,10 @@ const CheckoutSection = () => {
             <div className="saved-addresses">
               {addresses.map((addr) => (
                 <div key={addr.id} className="address-card">
-                  <p className="addr-name">{addr.fullName}</p>
-                  <p className="addr-line">{addr.address}</p>
-                  <p className="addr-line">{addr.city} - {addr.postalCode}</p>
-                  <p className="addr-line">{addr.state},</p>
+                  <p className="addr-label">{addr.label}</p>
+                  <p className="addr-line">{addr.street}</p>
+                  <p className="addr-line">{addr.city}</p>
+                  <p className="addr-line">{addr.pincode},</p>
                   <p className="addr-line"><strong>Phone:</strong> {addr.phone}</p>
                   <button className="select-btn">Deliver Here</button>
                 </div>
