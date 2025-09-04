@@ -7,25 +7,48 @@ import ShippingForm from '../shippingForm/ShippingForm'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close';
 import { useAuth } from '../../context/AuthContext'
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import axios from 'axios'
+
+const DELIVERY_OPTIONS = {
+  standard: { label: "Standard", charge: 0 },
+  express: { label: "Express", charge: 80 },
+  sameDay: { label: "Same Day", charge: 120 },
+};
+
 
 const CheckoutSection = () => {
   const [openAddress, setOpenAddress] = useState(false);
-  const { addresses } = useAuth();
+  const [editAddressData, setEditAddressData] = useState();
+  const [isEditAddress, setEditAddress] = useState(false);
+  const { addresses, user, getAddresses } = useAuth();
 
   // State for delivery method
   const [deliveryMethod, setDeliveryMethod] = useState("standard");
-  const [deliveryCharge, setDeliveryCharge] = useState(0); // Default standard charge
+  const deliveryCharge = DELIVERY_OPTIONS[deliveryMethod].charge;
 
   // Handle delivery method change
   const handleDeliveryChange = (e) => {
-    const method = e.target.value;
-    setDeliveryMethod(method);
-
-    if (method === "standard") setDeliveryCharge('Free');
-    if (method === "express") setDeliveryCharge(80);
-    if (method === "sameDay") setDeliveryCharge(120);
+    setDeliveryMethod(e.target.value);
   };
 
+  const handleSetDefault = () => {
+
+  }
+
+  const handleDelete = async (id) => {
+    await axios.delete(`http://localhost:4000/user/${user._id}/removeaddress/${id}`);
+    alert('address deleted Successfully!');
+    await getAddresses();
+  }
+
+  const handleEdit = (address) => {
+    setEditAddressData(address)
+    setEditAddress(true);
+    setOpenAddress(true);
+  };
+  
   return (
     <>
       <div className="main-container">
@@ -40,82 +63,107 @@ const CheckoutSection = () => {
 
             <div className="saved-addresses">
               {addresses.map((addr) => (
-                <div key={addr.id} className="address-card">
-                  <p className="addr-label">{addr.label}</p>
+                <div
+                  key={addr.id}
+                  className={`address-card ${addr.isDefault ? "default" : ""}`}
+                >
+                  <p className="addr-label">
+                    {addr.label} {addr.isDefault && <span>Default</span>}
+                  </p>
                   <p className="addr-line">{addr.street}</p>
                   <p className="addr-line">{addr.city}</p>
-                  <p className="addr-line">{addr.pincode},</p>
+                  <p className="addr-line">{addr.pincode}</p>
                   <p className="addr-line"><strong>Phone:</strong> {addr.phone}</p>
-                  <button className="select-btn">Deliver Here</button>
+
+                  <div className="btn-group">
+                    <button className="select-btn">Deliver Here</button>
+                    {!addr.isDefault && (
+                      <button onClick={() => handleSetDefault(addr.id)}
+                        style={{
+                          position: 'absolute',
+                          right: '8px',
+                          top: '15px',
+                        }}  
+                      >Set Default</button>
+                    )}
+                  <IconButton style={{float: 'right'}}
+                    onClick={() =>
+                      handleEdit(addr) // Replace with form data
+                    }
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton style={{float: 'right'}} onClick={() => handleDelete(addr._id)}><DeleteIcon /></IconButton>
+                </div>
                 </div>
               ))}
-            </div>
-
-            {/* DELIVERY METHOD SECTION */}
-            <div className="delivery-method">
-              <h4>Select Delivery Method</h4>
-              <div className="delivery-options">
-                <label>
-                  <input
-                    type="radio"
-                    value="standard"
-                    checked={deliveryMethod === "standard"}
-                    onChange={handleDeliveryChange}
-                  />
-                  Standard Delivery (3-5 Days) - Free
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    value="express"
-                    checked={deliveryMethod === "express"}
-                    onChange={handleDeliveryChange}
-                  />
-                  Express Delivery (1-2 Days) - ₹80
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    value="sameDay"
-                    checked={deliveryMethod === "sameDay"}
-                    onChange={handleDeliveryChange}
-                  />
-                  Same Day Delivery - ₹120
-                </label>
-              </div>
-
-              <div className="delivery-charge">
-                <p><strong>Selected Method:</strong> {deliveryMethod}</p>
-                <p><strong>Delivery Charge:</strong> {deliveryCharge === 0 ? "Free" : `₹${deliveryCharge}`}</p>
-              </div>
-            </div>
           </div>
 
-          {/* RIGHT SIDE */}
-          <div className="right-section">
-            <BillingDetails path='payment' label='PROCEED TO PAYMENT' deliveryCharge={deliveryCharge} />
+          {/* DELIVERY METHOD SECTION */}
+          <div className="delivery-method">
+            <h4>Select Delivery Method</h4>
+            <div className="delivery-options">
+              <label>
+                <input
+                  type="radio"
+                  value="standard"
+                  checked={deliveryMethod === "standard"}
+                  onChange={handleDeliveryChange}
+                />
+                Standard Delivery (3-5 Days) - Free
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="express"
+                  checked={deliveryMethod === "express"}
+                  onChange={handleDeliveryChange}
+                />
+                Express Delivery (1-2 Days) - ₹80
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="sameDay"
+                  checked={deliveryMethod === "sameDay"}
+                  onChange={handleDeliveryChange}
+                />
+                Same Day Delivery - ₹120
+              </label>
+            </div>
+
+            <div className="delivery-charge">
+              <p><strong>Selected Method:</strong> {deliveryMethod}</p>
+              <p><strong>Delivery Charge:</strong> {deliveryCharge === 0 ? "Free" : `₹${deliveryCharge}`}</p>
+            </div>
           </div>
         </div>
 
-        {/* ADD ADDRESS DIALOG */}
-        <Dialog open={openAddress} onClose={() => setOpenAddress(false)} maxWidth="sm" fullWidth>
-          <DialogContent>
-            <div >
-              <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-                sx={{ mr: 2, padding: 0 }}
-                onClick={() => setOpenAddress(false)}
-                >
-                <CloseIcon />
-              </IconButton>
-            </div>
-            <ShippingForm onClose={() => setOpenAddress(false)} />
-          </DialogContent>
-        </Dialog>
+        {/* RIGHT SIDE */}
+        <div className="right-section">
+          <BillingDetails path='payment' label='PROCEED TO PAYMENT' deliveryCharge={deliveryCharge} />
+        </div>
       </div>
+
+      {/* ADD ADDRESS DIALOG */}
+      <Dialog open={openAddress} onClose={() => setOpenAddress(false)} maxWidth="sm" fullWidth>
+        <DialogContent>
+          <div >
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2, padding: 0 }}
+              onClick={() => setOpenAddress(false)}
+            >
+              <CloseIcon />
+            </IconButton>
+          </div>
+          <ShippingForm onClose={() => setOpenAddress(false)} addressData={editAddressData} isEdit={isEditAddress}/>
+        </DialogContent>
+      </Dialog>
+    </div >
     </>
   )
 }

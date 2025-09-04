@@ -7,7 +7,14 @@ import { useShopContext } from '../../context/ShopContext';
 const Productdisplay = (props) => {
   const { product } = props;
   const { addToCart } = useShopContext();
-  const boxRef = useRef(null)
+  const boxRef = useRef(null);
+
+  const StockStatus = ({ quantity }) => {
+    if (quantity === 0) return <span style={{ color: "red", fontSize: "20px" , fontWeight:650}}>Out of Stock</span>;
+    if (quantity <= 10)
+      return <span style={{ color: "orange", fontSize: "20px", fontWeight:650 }}>Only {quantity} left</span>;
+    return <span style={{ color: "green", fontSize: "20px" , fontWeight:650}}>In Stock</span>;
+  };
 
   const HandleHover = (e) => {
     const { left, top, width, height } = boxRef.current.getBoundingClientRect();
@@ -75,6 +82,7 @@ const Productdisplay = (props) => {
             <div>XXL</div>
           </div>
           <button onClick={() => { addToCart(product.id) }}>ADD TO CART</button>
+          <StockStatus quantity={product.quantity}/>
           <p className="productdisplay-right-category"><span>Category :</span>Women , T-Shirt, Crop Top</p>
           <p className="productdisplay-right-category"><span>Tags :</span>Modern, Latest</p>
         </div>

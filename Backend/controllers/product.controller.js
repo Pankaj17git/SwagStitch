@@ -56,19 +56,44 @@ const removeProduct = async (req, res) => {
 }
 
 const getNewCollections = async (req, res) => {
-  let products = await Product.find({});
-  let newcollection = products.slice(1).slice(-8);
-  res.send(newcollection);
+  try {
+    let products = await Product.find({});
+    let newcollection = products.slice(1).slice(-8);
+    res.send(newcollection);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 }
 
 const getPopularInWomen = async (req, res) => {
-  let products = await Product.find({category: "women"});
+  let products = await Product.find({ category: "women" });
   let popular_in_women = products.slice(0, 4);
   res.send(popular_in_women);
 }
 
+const updateProductQuantity = async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const { quantity } = req.body;
+    console.log(productId, quantity);
+
+    const product = await Product.findOne({ _id: productId });
+    if (!product) {
+      return res.status(404).json({ message: "Product not found!" });
+    }
+
+    product.quantity = quantity;                      // Update quantity field
+    await product.save();                             // Save changes to DB
+
+    res.json({ message: `Product with ID ${productId} updated`, updatedQuantity: product.quantity });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 module.exports = {
   addProduct, removeProduct,
   getAllProducts, getNewCollections,
-  getPopularInWomen
+  getPopularInWomen, updateProductQuantity
 }

@@ -1,10 +1,12 @@
 const User = require('../models/user.model.js');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt')
 
 
 const userSignUp = async (req, res) => {
 
   let check = await User.findOne({ email: req.body.email });
+  const saltRounds = 10;
 
   if (check) {
     return res.status(404).json({ success: false, error: "Existng user with the same email Please use a different one" })
@@ -15,10 +17,14 @@ const userSignUp = async (req, res) => {
     cart[i] = 0;
   }
 
+  const plainPassword = req.body.password;
+
+  const hashedPassword = await bcrypt.hash(plainPassword, saltRounds);
+
   const user = new User({
     name: req.body.username,
     email: req.body.email,
-    password: req.body.password,
+    password: hashedPassword,
     cartData: cart,
   });
   await user.save();
@@ -30,14 +36,14 @@ const userSignUp = async (req, res) => {
   }
 
   const token = jwt.sign(data, 'secret_ecom');
-  res.json({ success: true, token:token, user: user })
+  res.json({ success: true, token: token, user: user })
 }
 
 const userLogin = async (req, res) => {
   let user = await User.findOne({ email: req.body.email });
 
   if (user) {
-    const passCompare = req.body.password === user.password;
+    const passCompare = await bcrypt.compare(req.body.password, user.password)
     if (passCompare) {
       const data = {
         user: {
@@ -45,7 +51,7 @@ const userLogin = async (req, res) => {
         }
       }
       const token = jwt.sign(data, 'secret_ecom');
-      res.json({ success: true, token:token, user: user});
+      res.json({ success: true, token: token, user: user });
     }
     else {
       res.json({ success: false, error: 'Wrong Password!' })

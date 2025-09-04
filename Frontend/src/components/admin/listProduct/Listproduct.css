@@ -17,10 +17,11 @@
 
 .listproduct-format-main {
   display: grid;
-  grid-template-columns: 1fr 3fr repeat(4, 1fr);
+  grid-template-columns: 1fr 3fr repeat(6, 1fr);
   gap: 10px;
   width: 100%;
   padding: 20px 0px;
+  text-align: center;
   color: #454545;
   font-size: 15px;
   font-weight: 600;

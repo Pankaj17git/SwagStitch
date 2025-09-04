@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react"
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react"
 import dollarToRupees from "../utils/formatCurrency";
 // import axios from 'axios'
 
@@ -18,22 +18,30 @@ const ShopContexProvider = (props) => {
   const [cartItems, setCartItems] = useState(getDefaultCart());
 
   useEffect(() => {
-    fetch('http://localhost:4000/products')
-      .then((res) => res.json())
-      .then((data) => setAll_Product(data));
+    const fetchProductsAndCart = async () => {
+      try {
+        const productRes = await fetch('http://localhost:4000/products');
+        const products = await productRes.json();
+        setAll_Product(products);
 
-    if (localStorage.getItem('auth-token')) {
-      fetch('http://localhost:4000/cart/', {
-        method: "POST",
-        headers: {
-          Accept: "application/form-data",
-          'auth-token': `${localStorage.getItem("auth-token")}`,
-          'Content-Type': "application/json"
-        },
-        body: ""
-      }).then((res) => res.json())
-        .then((data) => setCartItems(data))
-    }
+        if (localStorage.getItem('auth-token')) {
+          const cartRes = await fetch('http://localhost:4000/cart/', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/form-data',
+              'auth-token': localStorage.getItem('auth-token'),
+              'Content-Type': 'application/json'
+            },
+            body: ''
+          });
+          const cartData = await cartRes.json();
+          setCartItems(cartData);
+        }
+      } catch (error) {
+        console.error('Failed to fetch products or cart:', error);
+      }
+    };
+    fetchProductsAndCart();
   }, []);
 
   const addToCart = (itemId) => {
@@ -66,12 +74,12 @@ const ShopContexProvider = (props) => {
           'auth-token': `${localStorage.getItem("auth-token")}`,
           'Content-Type': "application/json"
         },
-        body: JSON.stringify({ "itemId": itemId})
+        body: JSON.stringify({ "itemId": itemId })
       }).then((res) => res.json())
     }
   }
 
-  const getTotalCartAmount = () => {
+  const getTotalCartAmount = useMemo(() => {
     let totalAmount = 0;
     for (const item in cartItems) {
       if (cartItems[item] > 0) {
@@ -80,9 +88,10 @@ const ShopContexProvider = (props) => {
       }
     }
     return dollarToRupees(totalAmount, 60);
-  }
+  },[cartItems, all_product]);
 
-  const getTotalCartItem = () => {
+
+  const getTotalCartItem = useMemo(() => {
     let totalItem = 0;
     for (const item in cartItems) {
       if (cartItems[item] > 0) {
@@ -90,7 +99,7 @@ const ShopContexProvider = (props) => {
       }
     }
     return totalItem;
-  }
+  }, [cartItems])
 
 
 

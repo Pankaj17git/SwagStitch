@@ -9,7 +9,7 @@ const BillingDetails = (props) => {
 
   const {getTotalCartAmount} = useShopContext();
   const shippingFee =  props.deliveryCharge === 'Free' ? 0 : props.deliveryCharge ;
-  const subTotal = getTotalCartAmount();
+  const subTotal = getTotalCartAmount;
   const discountResult = getDiscount(subTotal)
   const handleCheckout = () => {
     navigate(`/${props.path}`)

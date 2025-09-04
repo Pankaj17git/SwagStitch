@@ -2,16 +2,34 @@ import "./ShippingForm.css";
 import { useForm } from 'react-hook-form'
 import { useAuth } from "../../context/AuthContext";
 import axios from 'axios'
+import { useEffect } from "react";
 
 
-const ShippingForm = ({ onClose }) => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+const ShippingForm = ({ onClose, addressData, isEdit }) => {
+  const { register, reset, handleSubmit, formState: { errors } } = useForm();
   const { user, getAddresses } = useAuth();
 
+  useEffect(() => {
+    if (isEdit) {
+      reset(addressData)
+    } else {
+      reset({});
+    }
+  }, [])
+
   const onSubmit = async (data) => {
-    await axios.post(`http://localhost:4000/user/${user._id}/addaddress`, data)
-    getAddresses();
-    onClose();
+    try {
+      if (isEdit) {
+        await axios.put(`http://localhost:4000/user/${user._id}/updateaddress/${addressData._id}`, data);
+      } else {
+        await axios.post(`http://localhost:4000/user/${user._id}/addaddress`, data);
+      }
+      getAddresses();
+      onClose();
+    } catch (error) {
+      console.error("Unable to Process Request", error);
+
+    }
   }
 
   return (
@@ -53,7 +71,9 @@ const ShippingForm = ({ onClose }) => {
         {errors.phone && (<p className="error">{errors.phone.message}</p>)}
 
         <button type="submit" className="shipping-btn">
-          Save Address
+          {
+            isEdit ? 'Update Address' : 'Save Address'
+          }
         </button>
       </form>
     </div>

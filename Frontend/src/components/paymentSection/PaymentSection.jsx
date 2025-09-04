@@ -2,10 +2,15 @@ import './PaymentSection.css'
 import BillingDetails from '../billingDetails/BillingDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState } from 'react';
+import { useAuth } from '../../context/AuthContext';
 
 
 const PaymentSection = () => {
   const [active, setActive] = useState(null);
+  const {user, addresses} = useAuth();
+  const address = addresses[0];
+  console.log(address);
+  
 
   const toggleSection = (id) => {
     setActive(active === id ? null : id);
@@ -16,9 +21,9 @@ const PaymentSection = () => {
       <div className="main-container">
         <div className="address-container">
           <div>
-            <h5>Delever To: Pankaj ,, 174301</h5>
+            <h5>Delever To: {user.name} ,, {address.pincode}</h5>
             <p style={{ fontSize: '12px' }}>
-              WARD no1-Lalhri-UNA-Himachal,  Haroli,  Ambedkar Park  Una
+              ({address.label}) {address.street}, {address.city}, 
             </p>
           </div>
           <button>CHANGE</button>

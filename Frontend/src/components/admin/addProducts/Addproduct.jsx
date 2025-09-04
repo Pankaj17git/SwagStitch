@@ -17,30 +17,30 @@ const Addproduct = () => {
   }
 
   const changeHandler = (e) => {
-    setProductDetails({...productDetails, [e.target.name]:e.target.value})
+    setProductDetails({ ...productDetails, [e.target.name]: e.target.value })
   }
 
   const Add_Product = async () => {
     let responseData;
     let product = productDetails;
-    
+
     let formData = new FormData();
     formData.append('product', image);
 
-    await fetch('http://localhost:4000/upload',{
+    await fetch('http://localhost:4000/upload', {
       method: 'POST',
-      headers:{
-        Accept:'application/json',
+      headers: {
+        Accept: 'application/json',
       },
-      body:formData,
-    }).then((res) => res.json()).then((data) => {responseData = data})
+      body: formData,
+    }).then((res) => res.json()).then((data) => { responseData = data })
 
     if (responseData.success) {
       product.image = responseData.image_url;
       console.log(product);
-      await fetch('http://localhost:4000/products/addproduct',{
+      await fetch('http://localhost:4000/products/addproduct', {
         method: 'POST',
-        headers:{
+        headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json'
         },
@@ -69,13 +69,19 @@ const Addproduct = () => {
             <input value={productDetails.new_price} onChange={changeHandler} type="text" name='new_price' placeholder='Type here' />
           </div>
         </div>
-        <div className="addproduct-itemfield">
-          <p>Product Category</p>
-          <select value={productDetails.category} onChange={changeHandler} name="category" className='addproduct-selector'>
-            <option value="women">Women</option>
-            <option value="men">Men</option>
-            <option value="kid">Kid</option>
-          </select>
+        <div className="addproduct-itemfield-category">
+          <div  className="addproduct-itemfield">
+            <p>Product Category</p>
+            <select value={productDetails.category} onChange={changeHandler} name="category" className='addproduct-selector'>
+              <option value="women">Women</option>
+              <option value="men">Men</option>
+              <option value="kid">Kid</option>
+            </select>
+          </div>
+          <div className="addproduct-itemfield">
+            <p>Quantity</p>
+            <input value={productDetails.quantity} onChange={changeHandler} type="number" name='quantity' placeholder='Type here' />
+          </div>
         </div>
         <div className="addproduct-itemfield">
           <label htmlFor="file-input" className='addproduct-thumnail-label'>
@@ -90,7 +96,7 @@ const Addproduct = () => {
           </label>
           <input onChange={imageHandler} type="file" name='image' id='file-input' hidden />
         </div>
-        <button onClick={() => {Add_Product()}} className="addproduct-btn">ADD</button>
+        <button onClick={() => { Add_Product() }} className="addproduct-btn">ADD</button>
       </div>
     </>
   )
