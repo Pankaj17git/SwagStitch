@@ -75,19 +75,18 @@ const updateProductQuantity = async (req, res) => {
   try {
     const { productId } = req.params;
     const { quantity } = req.body;
-    console.log(productId, quantity);
 
     const product = await Product.findOne({ _id: productId });
     if (!product) {
       return res.status(404).json({ message: "Product not found!" });
     }
 
-    product.quantity = quantity;                      // Update quantity field
-    await product.save();                             // Save changes to DB
+    product.quantity = quantity;                     
+    await product.save();                            
 
     res.json({ message: `Product with ID ${productId} updated`, updatedQuantity: product.quantity });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+   
   }
 };
 

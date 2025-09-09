@@ -28,7 +28,6 @@ const ShippingForm = ({ onClose, addressData, isEdit }) => {
       onClose();
     } catch (error) {
       console.error("Unable to Process Request", error);
-
     }
   }
 

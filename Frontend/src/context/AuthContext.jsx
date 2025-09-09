@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [addresses, setAddresses] = useState([]);
+  const [deliveryAddress, setDeliveryAddress] = useState(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("auth-user");
@@ -16,11 +17,13 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
+
   useEffect(() => {
     if (user?._id) {
       getAddresses();
     }
   }, [user?._id]);
+
 
   const authLogin = (data) => {
     localStorage.setItem("auth-token", data.token);
@@ -45,7 +48,7 @@ export const AuthProvider = ({ children }) => {
 
 
   return (
-    <AuthContext value={{ user, authLogin, logout, addresses, getAddresses }}>
+    <AuthContext value={{ user, authLogin, logout, addresses, getAddresses, deliveryAddress, setDeliveryAddress }}>
       {!loading && children}
     </AuthContext>
   );

@@ -6,6 +6,7 @@ import dollarToRupees from '../../utils/formatCurrency';
 import BillingDetails from '../billingDetails/BillingDetails';
 const CartItems = () => {
   const { all_product, cartItems, removeFromCart } = useShopContext();
+
   return (
     <>
       <div className="cartitems">
@@ -40,7 +41,7 @@ const CartItems = () => {
 
         <div className='cartitems-down'>
           <div>
-            <h1 style={{paddingLeft: '10px', borderLeft: '5px solid #ff5a5a'}}>Cart Totals</h1>
+            <h1 style={{ paddingLeft: '10px', borderLeft: '5px solid #ff5a5a' }}>Cart Totals</h1>
             <BillingDetails deliveryCharge={'Free'} shipping path='checkout' label='PROCEED TO CHECKOUT' />
           </div>
           <div className="cartitems-promocode">

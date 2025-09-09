@@ -1,0 +1,143 @@
+/* --- OrderList.css --- */
+
+/* Main wrapper */
+.main {
+  padding: 1rem;
+  background: #f9fafb; /* light gray background */
+  display: flex;
+  justify-content: center;
+}
+
+/* Order card container */
+.orderList {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 800px;
+}
+
+/* Product Info */
+.productInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.productInfo img {
+  width: 64px;
+  height: 64px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.product-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.product-order-id {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+/* Status */
+.status-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.status-container span {
+  margin-top: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* Status colors */
+.status-delivered {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.status-shipped {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.status-pending {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+/* Total */
+.order-total-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.total {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.total-price {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Details link */
+.detail a {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #ff5a5a;
+  text-decoration: none;
+}
+
+.detail a:hover {
+  text-decoration: underline;
+}
+
+/* --- Responsive Styles --- */
+@media (max-width: 768px) {
+  .orderList {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 1rem;
+  }
+
+  .status-container,
+  .order-total-container,
+  .detail {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .orderList {
+    grid-template-columns: 1fr;
+  }
+
+  .productInfo {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .productInfo img {
+    width: 48px;
+    height: 48px;
+  }
+}

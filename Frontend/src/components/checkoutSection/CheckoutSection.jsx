@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import BillingDetails from '../billingDetails/BillingDetails'
 import './CheckoutSection.css'
 import Dialog from '@mui/material/Dialog'
@@ -10,6 +10,7 @@ import { useAuth } from '../../context/AuthContext'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios'
+import { useShopContext } from '../../context/ShopContext'
 
 const DELIVERY_OPTIONS = {
   standard: { label: "Standard", charge: 0 },
@@ -22,19 +23,23 @@ const CheckoutSection = () => {
   const [openAddress, setOpenAddress] = useState(false);
   const [editAddressData, setEditAddressData] = useState();
   const [isEditAddress, setEditAddress] = useState(false);
-  const { addresses, user, getAddresses } = useAuth();
+  const { addresses, user, getAddresses, setDeliveryAddress } = useAuth();
+  const { setDeliveryCharge, deliveryCharge } = useShopContext()
 
   // State for delivery method
   const [deliveryMethod, setDeliveryMethod] = useState("standard");
-  const deliveryCharge = DELIVERY_OPTIONS[deliveryMethod].charge;
 
+  useEffect(() => {
+    setDeliveryCharge(DELIVERY_OPTIONS[deliveryMethod].charge);
+  }, [deliveryMethod, setDeliveryCharge]);
+  
   // Handle delivery method change
   const handleDeliveryChange = (e) => {
     setDeliveryMethod(e.target.value);
   };
 
-  const handleSetDefault = () => {
-
+  const handleAddress = (data) => {
+    setDeliveryAddress(data)
   }
 
   const handleDelete = async (id) => {
@@ -48,7 +53,7 @@ const CheckoutSection = () => {
     setEditAddress(true);
     setOpenAddress(true);
   };
-  
+
   return (
     <>
       <div className="main-container">
@@ -76,94 +81,85 @@ const CheckoutSection = () => {
                   <p className="addr-line"><strong>Phone:</strong> {addr.phone}</p>
 
                   <div className="btn-group">
-                    <button className="select-btn">Deliver Here</button>
-                    {!addr.isDefault && (
-                      <button onClick={() => handleSetDefault(addr.id)}
-                        style={{
-                          position: 'absolute',
-                          right: '8px',
-                          top: '15px',
-                        }}  
-                      >Set Default</button>
-                    )}
-                  <IconButton style={{float: 'right'}}
-                    onClick={() =>
-                      handleEdit(addr) // Replace with form data
-                    }
-                  >
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton style={{float: 'right'}} onClick={() => handleDelete(addr._id)}><DeleteIcon /></IconButton>
-                </div>
+                    <button className="select-btn" onClick={() => { handleAddress(addr) }}>Deliver Here</button>
+                    <IconButton style={{ float: 'right' }}
+                      onClick={() =>
+                        handleEdit(addr) // Replace with form data
+                      }
+                    >
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton style={{ float: 'right' }} onClick={() => handleDelete(addr._id)}><DeleteIcon /></IconButton>
+                  </div>
                 </div>
               ))}
+            </div>
+
+            {/* DELIVERY METHOD SECTION */}
+            <div className="delivery-method">
+              <h4>Select Delivery Method</h4>
+              <div className="delivery-options">
+                <label>
+                  <input
+                    type="radio"
+                    value="standard"
+                    checked={deliveryMethod === "standard"}
+                    onChange={handleDeliveryChange}
+                  />
+                  Standard Delivery (3-5 Days) - Free
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    value="express"
+                    checked={deliveryMethod === "express"}
+                    onChange={handleDeliveryChange}
+                  />
+                  Express Delivery (1-2 Days) - ₹80
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    value="sameDay"
+                    checked={deliveryMethod === "sameDay"}
+                    onChange={handleDeliveryChange}
+                  />
+                  Same Day Delivery - ₹120
+                </label>
+              </div>
+
+              <div className="delivery-charge">
+                <p><strong>Selected Method:</strong> {deliveryMethod}</p>
+                <p><strong>Delivery Charge:</strong> {deliveryCharge === 0 ? "Free" : `₹${deliveryCharge}`}</p>
+              </div>
+            </div>
           </div>
 
-          {/* DELIVERY METHOD SECTION */}
-          <div className="delivery-method">
-            <h4>Select Delivery Method</h4>
-            <div className="delivery-options">
-              <label>
-                <input
-                  type="radio"
-                  value="standard"
-                  checked={deliveryMethod === "standard"}
-                  onChange={handleDeliveryChange}
-                />
-                Standard Delivery (3-5 Days) - Free
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  value="express"
-                  checked={deliveryMethod === "express"}
-                  onChange={handleDeliveryChange}
-                />
-                Express Delivery (1-2 Days) - ₹80
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  value="sameDay"
-                  checked={deliveryMethod === "sameDay"}
-                  onChange={handleDeliveryChange}
-                />
-                Same Day Delivery - ₹120
-              </label>
-            </div>
-
-            <div className="delivery-charge">
-              <p><strong>Selected Method:</strong> {deliveryMethod}</p>
-              <p><strong>Delivery Charge:</strong> {deliveryCharge === 0 ? "Free" : `₹${deliveryCharge}`}</p>
-            </div>
+          {/* RIGHT SIDE */}
+          <div className="right-section">
+            <BillingDetails path='payment' label='PROCEED TO PAYMENT' deliveryCharge={deliveryCharge} />
           </div>
         </div>
 
-        {/* RIGHT SIDE */}
-        <div className="right-section">
-          <BillingDetails path='payment' label='PROCEED TO PAYMENT' deliveryCharge={deliveryCharge} />
-        </div>
-      </div>
-
-      {/* ADD ADDRESS DIALOG */}
-      <Dialog open={openAddress} onClose={() => setOpenAddress(false)} maxWidth="sm" fullWidth>
-        <DialogContent>
-          <div >
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2, padding: 0 }}
-              onClick={() => setOpenAddress(false)}
-            >
-              <CloseIcon />
-            </IconButton>
-          </div>
-          <ShippingForm onClose={() => setOpenAddress(false)} addressData={editAddressData} isEdit={isEditAddress}/>
-        </DialogContent>
-      </Dialog>
-    </div >
+        {/* ADD ADDRESS DIALOG */}
+        <Dialog open={openAddress} onClose={() => setOpenAddress(false)} maxWidth="sm" fullWidth>
+          <DialogContent>
+            <div >
+              <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                sx={{ mr: 2, padding: 0 }}
+                onClick={() => setOpenAddress(false)}
+              >
+                <CloseIcon />
+              </IconButton>
+            </div>
+            <ShippingForm onClose={() => setOpenAddress(false)} addressData={editAddressData} isEdit={isEditAddress} />
+          </DialogContent>
+        </Dialog>
+      </div >
     </>
   )
 }

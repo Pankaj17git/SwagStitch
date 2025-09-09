@@ -32,7 +32,30 @@ const removeFromCart = async (req, res) => {
   res.json({ success: true, message: "Removed" });
 }
 
+const clearCart = async (req, res) => {
+  try {
+    const { id } = req.body;
+    console.log(id);
+    
+    let user = await User.findById(id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    let cart = {};
+    for (let i = 0; i < 300; i++) {
+      cart[i] = 0;
+    }
+
+    user.cartData = cart;
+   
+    await user.save();
+
+    res.json({ success: true, message:"cleared" })
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 module.exports = {
   addToCart, removeFromCart,
-  getAllCartItems
+  getAllCartItems, clearCart
 }

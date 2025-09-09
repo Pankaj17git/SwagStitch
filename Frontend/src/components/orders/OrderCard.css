@@ -1,0 +1,71 @@
+/* --- OrdersPage.css --- */
+
+.orders-main {
+  flex: 1;
+  background-color: #f9fafb; /* light gray */
+  padding: 3rem 1rem;
+}
+
+.orders-container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* Header */
+.orders-header {
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.orders-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.orders-subtitle {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+}
+
+/* Orders List */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* --- Responsive Media Queries --- */
+@media (max-width: 768px) {
+  .orders-main {
+    padding: 2rem 1rem;
+  }
+
+  .orders-title {
+    font-size: 1.5rem;
+  }
+
+  .orders-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .orders-list {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .orders-main {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .orders-title {
+    font-size: 1.25rem;
+  }
+
+  .orders-subtitle {
+    font-size: 0.85rem;
+  }
+}

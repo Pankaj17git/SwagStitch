@@ -15,6 +15,7 @@ import AdminLayout from './layout/AdminLayout'
 import ListProduct from './components/admin/listProduct/Listproduct'
 import Addproduct from './components/admin/addProducts/Addproduct'
 import ProtectedRoutes from './routes/ProtectedRoutes'
+import Orders from './pages/Orders'
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
             <Route path=':productId' element={<Product/>}/>
           </Route>
           <Route path='/cart' element={<Cart/>}/>
+          <Route path='/orders' element={<Orders/>}/>
           <Route path='/checkout' element={<Checkout/>}/>
           <Route path='/payment' element={<Payment/>}/>
           <Route path='/login' element={<LoginSignUp/>}/>

@@ -112,7 +112,6 @@ const getAddress = async (req, res) => {
   }
 }
 
-
 const deleteAddress = async (req, res) => {
   try {
     let { id, addressId } = req.params;

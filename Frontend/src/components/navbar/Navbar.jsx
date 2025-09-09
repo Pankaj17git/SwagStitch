@@ -3,19 +3,39 @@ import './Navbar.css'
 import logo from '../../assets/logo.png'
 import cart_icon from '../Assets/cart_icon.png'
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import IconButton from '@mui/material/IconButton';
 import { useShopContext } from '../../context/ShopContext';
 import { useAuth } from '../../context/AuthContext';
-
+import { Avatar, Box, Menu, MenuItem, Tooltip, Typography } from '@mui/material';
 
 const Navbar = () => {
 
   const [menu, setmenu] = useState("shop");
   const [isToggle, setToggle] = useState(false);
-  const {getTotalCartItem} = useShopContext();
-
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const { getTotalCartItem } = useShopContext();
+  const navigate = useNavigate();
   const { user, logout } = useAuth();
+
+  const settings = ['Orders', 'Profile', user ? 'Logout' : 'Login'];
+
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
+  const handleUserNavigation = (setting) => {
+    if (setting === "Logout") {
+      logout();
+      window.location.replace('/')
+    } else{
+      navigate(`/${setting.toLowerCase()}`);
+    }
+  }
 
   return (
     <>
@@ -26,8 +46,8 @@ const Navbar = () => {
             edge="start"
             color="inherit"
             aria-label="menu"
-            sx={{ mr: 2  }}>
-            <MenuIcon onClick={() => setToggle(!isToggle)}/>
+            sx={{ mr: 2 }}>
+            <MenuIcon onClick={() => setToggle(!isToggle)} />
           </IconButton>
         </div>
         <div className="nav-logo">
@@ -50,12 +70,45 @@ const Navbar = () => {
           </ul>
         </div>
         <div className="nav-login-cart">
-          {localStorage.getItem('auth-token')
-            ? <button onClick={() => {logout(); window.location.replace('/')}}>Logout</button>
+          {/* {localStorage.getItem('auth-token')
+            ? <button onClick={() => { logout(); window.location.replace('/') }}>Logout</button>
             : <Link to='/login'><button>Login</button></Link>
-          }
+          } */}
           <Link to='/cart'><img src={cart_icon} alt="cart" /></Link>
           <div className="nav-cart-count">{getTotalCartItem}</div>
+ 
+          <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar sx={{width: "50px", height:"50px"}} alt={user ? user.name : ""}  />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: '70px' }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={() => {
+                  handleUserNavigation(setting)
+                  handleCloseUserMenu()
+                }}>
+                  <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
         </div>
       </div>
       {

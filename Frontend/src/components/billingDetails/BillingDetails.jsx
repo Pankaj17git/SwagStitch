@@ -7,12 +7,18 @@ import { useNavigate } from 'react-router'
 const BillingDetails = (props) => {
   const navigate = useNavigate()
 
-  const {getTotalCartAmount} = useShopContext();
-  const shippingFee =  props.deliveryCharge === 'Free' ? 0 : props.deliveryCharge ;
+  const { getTotalCartAmount, getTotalOrderAmount, deliveryCharge } = useShopContext();
   const subTotal = getTotalCartAmount;
   const discountResult = getDiscount(subTotal)
   const handleCheckout = () => {
-    navigate(`/${props.path}`)
+    if (props.onClick && props.path === "payment") {
+      props.onClick();
+      navigate(`/${props.path}`)
+    } else {
+      navigate(`/${props.path}`)
+    }
+
+
   }
 
   return (
@@ -27,7 +33,7 @@ const BillingDetails = (props) => {
             <hr />
             <div className="billing-total-item">
               <p>Shipping Fee</p>
-              <p>{shippingFee === 0 ? "Free" : `₹${shippingFee}`}</p>
+              <p>{deliveryCharge === 0 ? "Free" : `₹${deliveryCharge}`}</p>
             </div>
             <hr />
             <div className="billing-total-item">
@@ -37,7 +43,7 @@ const BillingDetails = (props) => {
             <hr />
             <div className="billing-total-item">
               <h3>Total</h3>
-              <h3>₹{discountResult.discountedPrice + shippingFee}</h3>
+              <h3>₹{getTotalOrderAmount}</h3>
             </div>
           </div>
           <button onClick={handleCheckout}>{props.label}</button>

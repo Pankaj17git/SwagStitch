@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import LoginSignUp from '../pages/LoginSignUp'
 
 const ProtectedRoutes = ({ children }) => {
   const { user } = useAuth()
@@ -13,10 +14,10 @@ const ProtectedRoutes = ({ children }) => {
   }, [user, navigate])
 
   if (!user || user.role !== "admin") {
-    return null // don’t render children while redirecting
+    return null;
   }
 
-  return children
+  return children;
 }
 
 export default ProtectedRoutes

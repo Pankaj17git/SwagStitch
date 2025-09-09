@@ -18,7 +18,7 @@ const Productdisplay = (props) => {
 
   const HandleHover = (e) => {
     const { left, top, width, height } = boxRef.current.getBoundingClientRect();
-    const x = ((e.clientX - left) / width) * 100; // % across element
+    const x = ((e.clientX - left) / width) * 100; 
     const y = ((e.clientY - top) / height) * 100;
 
     boxRef.current.style.setProperty('--display', 'block');
