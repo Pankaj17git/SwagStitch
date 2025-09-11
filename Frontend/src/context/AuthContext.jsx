@@ -10,12 +10,25 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [addresses, setAddresses] = useState([]);
   const [deliveryAddress, setDeliveryAddress] = useState(null);
+  const [customer, setCustomer] = useState([]);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("auth-user");
     if (storedUser) setUser(JSON.parse(storedUser));
     setLoading(false);
   }, []);
+
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      try {
+        const res = await axios.get('http://localhost:4000/user');
+        setCustomer(res.data.users)
+      } catch (error) {
+        console.error("Something went wrong!", error);
+      }
+    }
+    fetchCustomers();
+  }, [])
 
 
   useEffect(() => {
@@ -48,7 +61,11 @@ export const AuthProvider = ({ children }) => {
 
 
   return (
-    <AuthContext value={{ user, authLogin, logout, addresses, getAddresses, deliveryAddress, setDeliveryAddress }}>
+    <AuthContext value={{
+      user, authLogin, logout,
+      addresses, getAddresses, deliveryAddress,
+      setDeliveryAddress, customer
+    }}>
       {!loading && children}
     </AuthContext>
   );

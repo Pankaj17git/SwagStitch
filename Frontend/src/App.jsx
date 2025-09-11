@@ -16,6 +16,10 @@ import ListProduct from './components/admin/listProduct/Listproduct'
 import Addproduct from './components/admin/addProducts/Addproduct'
 import ProtectedRoutes from './routes/ProtectedRoutes'
 import Orders from './pages/Orders'
+import UserList from './components/admin/users/UserList'
+import Dashboard from './components/admin/dashboard/Dashboard'
+import OrdersList from './components/admin/orderlists/OrderList'
+
 
 
 function App() {
@@ -40,9 +44,11 @@ function App() {
           {/* Admin Routes */}
 
           <Route path='/admin' element={<ProtectedRoutes><AdminLayout/></ProtectedRoutes>}>
-            <Route index element={<Addproduct/>}/>
+            <Route index element={<Dashboard/>}/>
             <Route path='addproduct' element={<Addproduct/>}/>
             <Route path='productlist' element={<ListProduct/>}/>
+            <Route path='userlist' element={<UserList/>}/>
+            <Route path='orderlist' element={<OrdersList/>}/>
           </Route>
         </Routes>
         <Footer/>

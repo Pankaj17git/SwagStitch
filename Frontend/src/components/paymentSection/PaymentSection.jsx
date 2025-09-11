@@ -12,9 +12,9 @@ import axios from 'axios';
 const PaymentSection = () => {
   const [active, setActive] = useState(null);
   const { user, addresses, deliveryAddress, setDeliveryAddress } = useAuth();
-  const { setPaymentMethod, paymentMethod, setOrder,
-    getTotalOrderAmount, getTotalCartAmount,
-    deliveryCharge, cartItemDetail, cleanUp } = useShopContext();
+  const { setPaymentMethod, paymentMethod,
+  getTotalOrderAmount, getTotalCartAmount,
+  deliveryCharge, cartItemDetail, cleanUp } = useShopContext();
 
   const address = deliveryAddress !== null ? deliveryAddress : addresses[0];
 
@@ -46,9 +46,7 @@ const PaymentSection = () => {
 
       alert('orderPlaced successfully!')
 
-      setOrder(newOrder)
-
-      await axios.patch('http://localhost:4000/cart/clearcart', user._id)
+      await axios.patch('http://localhost:4000/cart/clearcart', { id: user._id })
       cleanUp();
 
     } catch (error) {

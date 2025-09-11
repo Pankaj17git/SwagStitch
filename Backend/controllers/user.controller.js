@@ -127,8 +127,32 @@ const deleteAddress = async (req, res) => {
   }
 }
 
+
+const getAllUsers = async (req, res) => {
+  try {
+    const { name, email } = req.query;
+
+    // build query object dynamically
+    const query = {};
+    if (name) query.name = name;
+    if (email) query.email = email;
+
+    const users = await User.find(query);
+
+    if (!users || users.length === 0) {
+      return res.status(404).json({ success: false, message: "No users found" });
+    }
+
+    res.status(200).json({ success: true, users });
+
+  } catch (error) {
+    res.status(500).json({ success: true, message: error.message });
+  }
+};
+
 module.exports = {
   userSignUp, userLogin,
   addAddress, updateAddress,
-  deleteAddress, getAddress
+  deleteAddress, getAddress,
+  getAllUsers
 }

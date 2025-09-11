@@ -37,6 +37,7 @@ const clearCart = async (req, res) => {
     const { id } = req.body;
     console.log(id);
     
+    
     let user = await User.findById(id);
     if (!user) return res.status(404).json({ message: "User not found" });
 

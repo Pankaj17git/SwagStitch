@@ -80,7 +80,9 @@ const Navbar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar sx={{width: "50px", height:"50px"}} alt={user ? user.name : ""}  />
+                <Avatar sx={{width: "50px", height:"50px"}} alt={user ? user.name : ""}  >
+                  {(user.name)[0]}
+                </Avatar>
               </IconButton>
             </Tooltip>
             <Menu

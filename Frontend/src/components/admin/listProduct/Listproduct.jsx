@@ -57,8 +57,8 @@ const ListProduct = () => {
               <div key={index} className="listproduct-format-main list-format">
                 <img src={product.image} alt="" className="listproduct-producticon" />
                 <p>{product.name}</p>
-                <p>₹{product.old_price}</p>
-                <p>₹{product.new_price}</p>
+                <p>${product.old_price}</p>
+                <p>${product.new_price}</p>
                 <p>{product.category}</p>
                 <p>{product.quantity}</p>
                 <StockStatus quantity={product.quantity}/>

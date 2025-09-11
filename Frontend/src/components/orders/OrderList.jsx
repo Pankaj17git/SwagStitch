@@ -2,6 +2,7 @@ import React from 'react'
 import './OrderList.css'
 
 const OrderList = ({ product }) => {
+
   return (
     <>
       <div className="main">
@@ -26,6 +27,12 @@ const OrderList = ({ product }) => {
             >
               {product.status}
             </span>
+          </div>
+
+          {/*Items*/}
+          <div className="order-total-conatainer">
+            <p className="total">Items</p>
+            <p>{product.items}</p>
           </div>
 
           {/* Total */}

@@ -8,25 +8,31 @@ const Sidebar = () => {
   return (
     <>
       <div className="sidebar">
+        <Link to={'/admin'} style={{ textDecoration: "none" }}>
+          <div className="sidebar-item">
+            <AddShoppingCartIcon />
+            <p>Dashboard</p>
+          </div>
+        </Link>
         <Link to={'/admin/addproduct'} style={{ textDecoration: "none" }}>
           <div className="sidebar-item">
             <AddShoppingCartIcon />
             <p>Add Product</p>
           </div>
         </Link>
-        <Link to={'/admin'} style={{ textDecoration: "none" }}>
+        <Link to={'/admin/productlist'} style={{ textDecoration: "none" }}>
           <div className="sidebar-item">
             <AddShoppingCartIcon />
             <p>Product List</p>
           </div>
         </Link>
-        <Link to={'/admin'} style={{ textDecoration: "none" }}>
+        <Link to={'/admin/userlist'} style={{ textDecoration: "none" }}>
           <div className="sidebar-item">
             <AddShoppingCartIcon />
             <p>Users List</p>
           </div>
         </Link>
-        <Link to={'/admin/productlist'} style={{ textDecoration: "none" }}>
+        <Link to={'/admin/orderlist'} style={{ textDecoration: "none" }}>
           <div className="sidebar-item">
             <AddShoppingCartIcon />
             <p>Orders List</p>

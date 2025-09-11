@@ -1,0 +1,115 @@
+.order-card {
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 20px 25px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+  font-family: "Poppins", sans-serif;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.order-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.status {
+  padding: 6px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status.pending {
+  background: #fff3cd;
+  color: #856404;
+}
+.status.shipped {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+.status.delivered {
+  background: #d4edda;
+  color: #155724;
+}
+
+.order-section {
+  margin-bottom: 20px;
+}
+
+.order-section h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #222;
+}
+
+.label {
+  font-weight: 600;
+  color: #111;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.item-info {
+  max-width: 70%;
+}
+
+.item-name {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+.item-qty {
+  margin: 0;
+  font-size: 13px;
+  color: #666;
+}
+
+.item-price {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111;
+}
+
+.totals p {
+  margin: 5px 0;
+  font-size: 15px;
+  color: #444;
+}
+
+.grand-total {
+  font-size: 16px;
+  font-weight: 700;
+  color: #222;
+}
+
+.address {
+  font-size: 14px;
+  color: #444;
+  line-height: 1.4;
+}
+
+.empty {
+  font-size: 14px;
+  color: #aaa;
+  font-style: italic;
+}

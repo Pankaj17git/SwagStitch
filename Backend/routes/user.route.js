@@ -1,5 +1,5 @@
 const express = require('express');
-const { userSignUp, userLogin, addAddress, updateAddress, deleteAddress, getAddress } = require('../controllers/user.controller');
+const { userSignUp, userLogin, getAllUsers, addAddress, updateAddress, deleteAddress, getAddress } = require('../controllers/user.controller');
 const router = express.Router();
 
 
@@ -8,6 +8,9 @@ router.post('/signup', userSignUp);
 
 //Endpoints for login
 router.post('/login', userLogin)
+
+//get all users
+router.get('/', getAllUsers);
 
 //Add Addresses 
 router.get('/:id/addresses', getAddress)

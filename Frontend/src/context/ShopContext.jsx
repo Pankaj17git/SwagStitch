@@ -17,7 +17,7 @@ const ShopContexProvider = (props) => {
   const [cartItems, setCartItems] = useState(getDefaultCart());
   const [deliveryCharge, setDeliveryCharge] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState("COD");
-  const [order, setOrder] = useState({});
+
   
   //  derived data: cart item details
   const cartItemDetail = useMemo(() => {
@@ -31,9 +31,6 @@ const ShopContexProvider = (props) => {
       }));
   }, [all_product, cartItems]);
 
-  useEffect(() => {
-    console.log("Order updated:", order);
-  }, [order]);
 
   useEffect(() => {
     const fetchProductsAndCart = async () => {
@@ -149,8 +146,6 @@ const ShopContexProvider = (props) => {
     setDeliveryCharge,
     paymentMethod,
     setPaymentMethod,
-    setOrder,
-    order,
     cartItemDetail, 
     cleanUp
   };

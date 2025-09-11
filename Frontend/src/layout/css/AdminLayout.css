@@ -1,5 +1,6 @@
 .admin {
   display: flex;
+  flex: 2;
 }
 
 .container {
