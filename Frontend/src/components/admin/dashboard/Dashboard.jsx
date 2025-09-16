@@ -1,5 +1,34 @@
 import React from "react";
 import "./Dashboard.css";
+import { Link } from "react-router";
+
+const statsData = [
+  {
+    icon: "bx-dollar-circle",
+    color: "#27891f",
+    label: "Total Sales",
+    value: "45,231.89"
+  },
+  {
+    icon: "bx-user-hexagon",
+    color: "#307af8",
+    label: "Total Users",
+    value: "2,350"
+  },
+  {
+    icon: "bx-hourglass",
+    color: "#daf830ff",
+    label: "Pending Orders",
+    value: "128"
+  },
+  {
+    icon: "bx-store",
+    color: "#f8304bff",
+    label: "Total Products",
+    value: "5,678"
+  }
+];
+
 
 const Dashboard = () => {
   return (
@@ -7,46 +36,33 @@ const Dashboard = () => {
       <main className="dashboard-main">
         {/* Stats Cards */}
         <section className="grid-2">
-          <div className="card">
-            <i className='bxr  bx-dollar-circle' style={{ color: '#27891f' }}></i>
-            <p className="small-text">Total Sales</p>
-            <p className="value">$45,231.89</p>
-          </div>
-          <div className="card">
-            <i className='bxr  bx-user-hexagon'  style={{color:'#307af8'}}></i> 
-            <p className="small-text">New Users</p>
-            <p className="value">2,350</p>
-          </div>
-          <div className="card">
-            <span className="material-symbols-outlined yellow">pending_actions</span>
-            <p className="small-text">Pending Orders</p>
-            <p className="value">128</p>
-          </div>
-          <div className="card">
-            <span className="material-symbols-outlined purple">inventory_2</span>
-            <p className="small-text">Total Products</p>
-            <p className="value">5,678</p>
-          </div>
+          {statsData.map((item, index) => (
+            <div className="card" key={index}>
+              <i className={`bx ${item.icon}`} style={{ color: item.color }}></i>
+              <p className="small-text">{item.label}</p>
+              <p className="value">{item.value}</p>
+            </div>
+          ))}
         </section>
 
         {/* Quick Links */}
         <section className="grid-2">
-          <a className="link-card" href="#">
-            <span className="material-symbols-outlined">group</span>
+          <Link className="link-card" to="/admin/userlist">
+            <i className='bxr  bx-community' style={{ color: '#8ebd8eff' }}></i>
             <span>User Management</span>
-          </a>
-          <a className="link-card" href="#">
-            <span className="material-symbols-outlined">receipt_long</span>
+          </Link>
+          <Link className="link-card" to="/admin/orderlist">
+            <i className='bx bx-receipt' style={{ color: '#d17fb0ff' }}></i>
             <span>Order Management</span>
-          </a>
-          <a className="link-card" href="#">
-            <span className="material-symbols-outlined">inventory</span>
+          </Link>
+          <Link className="link-card" to="/admin/productlist">
+            <i className='bx bx-store' style={{ color: '#edc515ff' }}></i>
             <span>Product Inventory</span>
-          </a>
-          <a className="link-card" href="#">
-            <span className="material-symbols-outlined">monitoring</span>
+          </Link>
+          <Link className="link-card" to="">
+            <i className='bxr  bx-report' style={{ color: '#96845bff' }}></i>
             <span>Analytics</span>
-          </a>
+          </Link>
         </section>
 
         {/* Top Selling Products */}

@@ -10,24 +10,24 @@ const Productdisplay = (props) => {
   const boxRef = useRef(null);
 
   const StockStatus = ({ quantity }) => {
-    if (quantity === 0) return <span style={{ color: "red", fontSize: "20px" , fontWeight:650}}>Out of Stock</span>;
+    if (quantity === 0) return <span style={{ color: "red", fontSize: "20px", fontWeight: 650 }}>Out of Stock</span>;
     if (quantity <= 10)
-      return <span style={{ color: "orange", fontSize: "20px", fontWeight:650 }}>Only {quantity} left</span>;
-    return <span style={{ color: "green", fontSize: "20px" , fontWeight:650}}>In Stock</span>;
+      return <span style={{ color: "orange", fontSize: "20px", fontWeight: 650 }}>Only {quantity} left</span>;
+    return <span style={{ color: "green", fontSize: "20px", fontWeight: 650 }}>In Stock</span>;
   };
 
   const HandleHover = (e) => {
     const { left, top, width, height } = boxRef.current.getBoundingClientRect();
-    const x = ((e.clientX - left) / width) * 100; 
+    const x = ((e.clientX - left) / width) * 100;
     const y = ((e.clientY - top) / height) * 100;
 
     boxRef.current.style.setProperty('--display', 'block');
     boxRef.current.style.setProperty("--zoom-x", `${x}%`);
     boxRef.current.style.setProperty("--zoom-y", `${y}%`);
-   
+
   }
 
-    const handleMouseLeave = () => {
+  const handleMouseLeave = () => {
     boxRef.current.style.setProperty("--display", "none");
   };
 
@@ -81,8 +81,11 @@ const Productdisplay = (props) => {
             <div>XL</div>
             <div>XXL</div>
           </div>
-          <button onClick={() => { addToCart(product.id) }}>ADD TO CART</button>
-          <StockStatus quantity={product.quantity}/>
+          <button onClick={() => { addToCart(product.id) }}
+            style={{background: !product.quantity? '#ff41415d': '#FF4141'}}
+            disabled={!product.quantity}
+          >ADD TO CART</button>
+          <StockStatus quantity={product.quantity} />
           <p className="productdisplay-right-category"><span>Category :</span>Women , T-Shirt, Crop Top</p>
           <p className="productdisplay-right-category"><span>Tags :</span>Modern, Latest</p>
         </div>

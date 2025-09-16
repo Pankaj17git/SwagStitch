@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import dollarToRupees from "../utils/formatCurrency";
 import getDiscount from "../utils/discount";
+import axios from "axios";
+import { useAuth } from "./AuthContext";
 
 const ShopContext = createContext(null);
 
@@ -15,10 +17,11 @@ const getDefaultCart = () => {
 const ShopContexProvider = (props) => {
   const [all_product, setAll_Product] = useState([]);
   const [cartItems, setCartItems] = useState(getDefaultCart());
+  const [order, setOrder] = useState([]);
   const [deliveryCharge, setDeliveryCharge] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState("COD");
+  const { user } = useAuth();
 
-  
   //  derived data: cart item details
   const cartItemDetail = useMemo(() => {
     return all_product
@@ -58,6 +61,18 @@ const ShopContexProvider = (props) => {
     };
 
     fetchProductsAndCart();
+  }, []);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const res = await axios.get(`http://localhost:4000/order?userId=${user._id}`);
+        setOrder(res.data);
+      } catch (error) {
+        console.error("Something went wrong!", error);
+      }
+    }
+    fetchOrders();
   }, []);
 
   const addToCart = (itemId) => {
@@ -129,7 +144,7 @@ const ShopContexProvider = (props) => {
     return discountResult.discountedPrice + deliveryCharge;
   }, [getTotalCartAmount, deliveryCharge]);
 
-  const cleanUp = async() => {
+  const cleanUp = async () => {
     setCartItems(getDefaultCart());
     setDeliveryCharge(0);
   }
@@ -138,6 +153,7 @@ const ShopContexProvider = (props) => {
     all_product,
     cartItems,
     addToCart,
+    order,
     removeFromCart,
     getTotalCartAmount,
     getTotalCartItem,
@@ -146,7 +162,7 @@ const ShopContexProvider = (props) => {
     setDeliveryCharge,
     paymentMethod,
     setPaymentMethod,
-    cartItemDetail, 
+    cartItemDetail,
     cleanUp
   };
 

@@ -19,6 +19,7 @@ import Orders from './pages/Orders'
 import UserList from './components/admin/users/UserList'
 import Dashboard from './components/admin/dashboard/Dashboard'
 import OrdersList from './components/admin/orderlists/OrderList'
+import OrderDetails from './components/orders/orderdetails/OrderDetails'
 
 
 
@@ -37,6 +38,7 @@ function App() {
           </Route>
           <Route path='/cart' element={<Cart/>}/>
           <Route path='/orders' element={<Orders/>}/>
+          <Route path='/orders/orderdetails' element={<OrderDetails/>}/>
           <Route path='/checkout' element={<Checkout/>}/>
           <Route path='/payment' element={<Payment/>}/>
           <Route path='/login' element={<LoginSignUp/>}/>
