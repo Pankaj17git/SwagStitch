@@ -45,6 +45,10 @@
   gap: 1rem;
 }
 
+.grid-2 i {
+  font-size: 40px;
+}
+
 /* Cards */
 .card {
   background: #f2f2f2;

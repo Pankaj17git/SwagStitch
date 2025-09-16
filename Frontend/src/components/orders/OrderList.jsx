@@ -1,8 +1,8 @@
 import React from 'react'
 import './OrderList.css'
+import {Link} from 'react-router'
 
-const OrderList = ({ product }) => {
-
+const OrderList = ({ product }) => {  
   return (
     <>
       <div className="main">
@@ -32,7 +32,7 @@ const OrderList = ({ product }) => {
           {/*Items*/}
           <div className="order-total-conatainer">
             <p className="total">Items</p>
-            <p>{product.items}</p>
+            <p>{product.items.length}</p>
           </div>
 
           {/* Total */}
@@ -43,12 +43,12 @@ const OrderList = ({ product }) => {
 
           {/* Link */}
           <div className="detail">
-            <a
-              href="#"
-              className=""
+            <Link
+              to="/orders/orderdetails"
+              state={{ product }}
             >
               View Details
-            </a>
+            </Link>
           </div>
         </div>
       </div>
