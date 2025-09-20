@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import './productdisplay.css'
+import './css/Productdisplay.css';
 import star_icon from '../Assets/star_icon.png';
 import star_dull_icon from '../Assets/star_dull_icon.png';
 import dollarToRupees from '../../utils/formatCurrency';
