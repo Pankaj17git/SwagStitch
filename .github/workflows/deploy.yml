@@ -34,8 +34,9 @@ jobs:
         uses: wlixcc/SFTP-Deploy-Action@v1.2
         with:
           server: ${{ secrets.FTP_HOST }}
+          port: 22 # or 21 for FTP
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps # or ftp depending on your host
+          protocol: sftp # or ftp depending on your host
           server-dir: /swag-stitch.dhimansoft.com/
           local-dir: ./Frontend/dist/
