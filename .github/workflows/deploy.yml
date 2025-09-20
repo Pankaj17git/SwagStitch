@@ -67,6 +67,69 @@
 
 
 
+# name: Deploy to swag-stitch.dhimansoft.com
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   build-and-deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       # 1️⃣ Checkout code
+#       - name: Checkout code
+#         uses: actions/checkout@v3
+
+#       # 2️⃣ Setup Node.js
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 18
+
+#       # 3️⃣ Build Frontend
+#       - name: Install Frontend dependencies
+#         working-directory: ./Frontend
+#         run: npm install
+
+#       - name: Build Frontend
+#         working-directory: ./Frontend
+#         run: npm run build
+
+#       # 4️⃣ Install sshpass for rsync with password
+#       - name: Install sshpass
+#         run: sudo apt-get update && sudo apt-get install -y sshpass
+
+#       # 5️⃣ Sync Frontend using rsync over SSH with password
+#       - name: Sync Frontend
+#         run: |
+#           sshpass -p ${{ secrets.SFTP_PASSWORD }} rsync -avz --delete \
+#           -e "ssh -o StrictHostKeyChecking=no -p 22" \
+#           ./Frontend/dist/ ${{ secrets.SFTP_USER }}@${{ secrets.SFTP_HOST }}:/var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/Frontend/
+
+#       # 6️⃣ Sync Backend using rsync over SSH with password
+#       - name: Sync Backend
+#         run: |
+#           sshpass -p ${{ secrets.SFTP_PASSWORD }} rsync -avz --exclude 'node_modules' --exclude '.git' --exclude '.github' \
+#           -e "ssh -o StrictHostKeyChecking=no -p 22" \
+#           ./Backend/ ${{ secrets.SFTP_USER }}@${{ secrets.SFTP_HOST }}:/var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/Backend/
+
+#       # 7️⃣ Run deploy.sh on server via SSH
+#       - name: Run deploy.sh
+#         uses: appleboy/ssh-action@v0.1.7
+#         with:
+#           host: ${{ secrets.SFTP_HOST }}
+#           username: ${{ secrets.SFTP_USER }}
+#           password: ${{ secrets.SFTP_PASSWORD }}
+#           port: 22
+#           script: |
+#             cd /var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/
+#             chmod +x deploy.sh
+#             ./deploy.sh
+
+
 name: Deploy to swag-stitch.dhimansoft.com
 
 on:
@@ -98,31 +161,37 @@ jobs:
         working-directory: ./Frontend
         run: npm run build
 
-      # 4️⃣ Install sshpass for rsync with password
-      - name: Install sshpass
-        run: sudo apt-get update && sudo apt-get install -y sshpass
+      # 4️⃣ Install rsync
+      - name: Install rsync
+        run: sudo apt-get update && sudo apt-get install -y rsync
 
-      # 5️⃣ Sync Frontend using rsync over SSH with password
+      # 5️⃣ Write private key for SSH
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SFTP_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      # 6️⃣ Sync Frontend using rsync over SSH
       - name: Sync Frontend
         run: |
-          sshpass -p ${{ secrets.SFTP_PASSWORD }} rsync -avz --delete \
-          -e "ssh -o StrictHostKeyChecking=no -p 22" \
-          ./Frontend/dist/ ${{ secrets.SFTP_USER }}@${{ secrets.SFTP_HOST }}:/var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/Frontend/
+          rsync -avz --delete -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -p 22" \
+          ./Frontend/dist/ swagdeploy@${{ secrets.SFTP_HOST }}:/var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/Frontend/
 
-      # 6️⃣ Sync Backend using rsync over SSH with password
+      # 7️⃣ Sync Backend using rsync over SSH
       - name: Sync Backend
         run: |
-          sshpass -p ${{ secrets.SFTP_PASSWORD }} rsync -avz --exclude 'node_modules' --exclude '.git' --exclude '.github' \
-          -e "ssh -o StrictHostKeyChecking=no -p 22" \
-          ./Backend/ ${{ secrets.SFTP_USER }}@${{ secrets.SFTP_HOST }}:/var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/Backend/
+          rsync -avz --exclude 'node_modules' --exclude '.git' --exclude '.github' \
+          -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -p 22" \
+          ./Backend/ swagdeploy@${{ secrets.SFTP_HOST }}:/var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/Backend/
 
-      # 7️⃣ Run deploy.sh on server via SSH
+      # 8️⃣ Run deploy.sh on server via SSH
       - name: Run deploy.sh
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.SFTP_HOST }}
-          username: ${{ secrets.SFTP_USER }}
-          password: ${{ secrets.SFTP_PASSWORD }}
+          username: swagdeploy
+          key: ${{ secrets.SFTP_PRIVATE_KEY }}
           port: 22
           script: |
             cd /var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/
