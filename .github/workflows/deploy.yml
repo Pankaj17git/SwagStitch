@@ -37,7 +37,7 @@ jobs:
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: 22
-          source: "./Frontend/dist/*"
+          source: "./Frontend/dist/"
           target: "/var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/Frontend/"
 
       # 5️⃣ Upload Backend via SFTP
@@ -48,7 +48,7 @@ jobs:
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: 22
-          source: "./Backend/*"
+          source: "./Backend/"
           target: "/var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/Backend/"
 
       # 6️⃣ Run deploy.sh on server
