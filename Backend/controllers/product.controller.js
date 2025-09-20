@@ -81,7 +81,7 @@ const updateProductQuantity = async (req, res) => {
       return res.status(404).json({ message: "Product not found!" });
     }
 
-    product.quantity = quantity;                     
+    product.quantity += quantity;                     
     await product.save();                            
 
     res.json({ message: `Product with ID ${productId} updated`, updatedQuantity: product.quantity });

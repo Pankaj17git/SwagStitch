@@ -11,6 +11,8 @@ export const AuthProvider = ({ children }) => {
   const [addresses, setAddresses] = useState([]);
   const [deliveryAddress, setDeliveryAddress] = useState(null);
   const [customer, setCustomer] = useState([]);
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 
   useEffect(() => {
     const storedUser = localStorage.getItem("auth-user");
@@ -21,7 +23,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const res = await axios.get('http://localhost:4000/user');
+        const res = await axios.get(`${BASE_URL}user`);
         setCustomer(res.data.users)
       } catch (error) {
         console.error("Something went wrong!", error);
@@ -52,7 +54,7 @@ export const AuthProvider = ({ children }) => {
 
   const getAddresses = async () => {
     try {
-      const res = await axios.get(`http://localhost:4000/user/${user._id}/addresses`);
+      const res = await axios.get(`${BASE_URL}user/${user._id}/addresses`);
       setAddresses(res.data);
     } catch (error) {
       console.error("Failed fetching addresses", error);

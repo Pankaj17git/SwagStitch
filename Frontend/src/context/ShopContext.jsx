@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import dollarToRupees from "../utils/formatCurrency";
 import getDiscount from "../utils/discount";
 import axios from "axios";
@@ -22,6 +22,8 @@ const ShopContexProvider = (props) => {
   const [paymentMethod, setPaymentMethod] = useState("COD");
   const { user } = useAuth();
 
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
+
   //  derived data: cart item details
   const cartItemDetail = useMemo(() => {
     return all_product
@@ -38,12 +40,12 @@ const ShopContexProvider = (props) => {
   useEffect(() => {
     const fetchProductsAndCart = async () => {
       try {
-        const productRes = await fetch("http://localhost:4000/products");
+        const productRes = await fetch(`${BASE_URL}products`);
         const products = await productRes.json();
         setAll_Product(products);
 
         if (localStorage.getItem("auth-token")) {
-          const cartRes = await fetch("http://localhost:4000/cart/", {
+          const cartRes = await fetch(`${BASE_URL}cart/`, {
             method: "POST",
             headers: {
               "Accept": "application/form-data",
@@ -66,7 +68,7 @@ const ShopContexProvider = (props) => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get(`http://localhost:4000/order?userId=${user._id}`);
+        const res = await axios.get(`${BASE_URL}order?userId=${user._id}`);
         setOrder(res.data);
       } catch (error) {
         console.error("Something went wrong!", error);
@@ -75,45 +77,23 @@ const ShopContexProvider = (props) => {
     fetchOrders();
   }, []);
 
-  const addToCart = (itemId) => {
-    setCartItems((prev) => ({
-      ...prev,
-      [itemId]: prev[itemId] + 1,
-    }));
-
+  const addToCart = useCallback((itemId) => {
+    setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
     if (localStorage.getItem("auth-token")) {
-      fetch("http://localhost:4000/cart/add", {
-        method: "POST",
-        headers: {
-          Accept: "application/form-data",
-          "auth-token": `${localStorage.getItem("auth-token")}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ itemId }),
-      })
-        .then((res) => res.json())
-        .then((data) => console.log(data));
+      axios.post(`${BASE_URL}cart/add`, { itemId }, {
+        headers: { "auth-token": localStorage.getItem("auth-token") }
+      }).catch(console.error);
     }
-  };
+  }, []);
 
-  const removeFromCart = (itemId) => {
-    setCartItems((prev) => ({
-      ...prev,
-      [itemId]: prev[itemId] - 1,
-    }));
-
+  const removeFromCart = useCallback((itemId) => {
+    setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
     if (localStorage.getItem("auth-token")) {
-      fetch("http://localhost:4000/cart/removefromcart", {
-        method: "POST",
-        headers: {
-          Accept: "application/form-data",
-          "auth-token": `${localStorage.getItem("auth-token")}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ itemId }),
-      }).then((res) => res.json());
+      axios.post(`${BASE_URL}cart/removefromcart`, { itemId }, {
+        headers: { "auth-token": localStorage.getItem("auth-token") }
+      }).catch(console.error);
     }
-  };
+  }, []);
 
   const getTotalCartAmount = useMemo(() => {
     let totalAmount = 0;
@@ -144,10 +124,10 @@ const ShopContexProvider = (props) => {
     return discountResult.discountedPrice + deliveryCharge;
   }, [getTotalCartAmount, deliveryCharge]);
 
-  const cleanUp = async () => {
+  const cleanUp = useCallback(() => {
     setCartItems(getDefaultCart());
     setDeliveryCharge(0);
-  }
+  }, []);
 
   const contextValue = {
     all_product,

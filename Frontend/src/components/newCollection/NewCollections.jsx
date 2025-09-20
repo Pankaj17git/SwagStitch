@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react'
 import './NewCollection.css';
 import Item from '../items/Item';
 import axios from 'axios'
+
 const NewCollections = () => {
   const [new_collections, setNew_collection] = useState([]);
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
    useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/products/newcollections");
+        const res = await axios.get(`${BASE_URL}products/newcollections`);
         setNew_collection(res.data);
       } catch (error) {
         console.error("Error fetching new collections:", error);

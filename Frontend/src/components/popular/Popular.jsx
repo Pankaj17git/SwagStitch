@@ -4,13 +4,14 @@ import axios from 'axios'
 import Item from '../items/Item'
 
 const Popular = () => {
-
+  
   const [popularProducts, setPopularProducts] = useState([]);
-
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get('http://localhost:4000/products/popularinwomen')
+        const res = await axios.get(`${BASE_URL}products/popularinwomen`)
         setPopularProducts(res.data)
       } catch (error) {
         console.log(error);

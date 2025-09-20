@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useShopContext } from '../../context/ShopContext'
 import './BillingDetails.css'
 import getDiscount from '../../utils/discount'
@@ -9,7 +9,7 @@ const BillingDetails = (props) => {
 
   const { getTotalCartAmount, getTotalOrderAmount, deliveryCharge } = useShopContext();
   const subTotal = getTotalCartAmount;
-  const discountResult = getDiscount(subTotal)
+  const discountResult = useMemo(() => getDiscount(subTotal),[subTotal]) 
   const handleCheckout = () => {
     if (props.onClick && props.path === "payment") {
       props.onClick();

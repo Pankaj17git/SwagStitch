@@ -12,6 +12,8 @@ const Addproduct = () => {
     old_price: "",
   })
 
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
+
   const imageHandler = (e) => {
     setImage(e.target.files[0]);
   }
@@ -27,7 +29,7 @@ const Addproduct = () => {
     let formData = new FormData();
     formData.append('product', image);
 
-    await fetch('http://localhost:4000/upload', {
+    await fetch(`${BASE_URL}upload`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -38,7 +40,7 @@ const Addproduct = () => {
     if (responseData.success) {
       product.image = responseData.image_url;
       console.log(product);
-      await fetch('http://localhost:4000/products/addproduct', {
+      await fetch(`${BASE_URL}products/addproduct`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',

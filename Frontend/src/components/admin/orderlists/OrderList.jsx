@@ -7,6 +7,7 @@ import { useAuth } from "../../../context/AuthContext";
 import { Dialog, DialogContent, IconButton } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import OrderDetails from "../users/orderDetail/OrderDetail";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const OrdersList = () => {
   const [ordersDetail, setOrderDetail] = useState([]);
@@ -18,7 +19,7 @@ const OrdersList = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get('http://localhost:4000/order/admin');
+        const res = await axios.get(`${BASE_URL}order/admin`);
         setOrderDetail(res.data.orders);
       } catch (error) {
         console.error("Something went wrong!", error);

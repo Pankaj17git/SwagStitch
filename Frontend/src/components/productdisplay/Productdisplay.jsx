@@ -4,11 +4,12 @@ import star_icon from '../Assets/star_icon.png';
 import star_dull_icon from '../Assets/star_dull_icon.png';
 import dollarToRupees from '../../utils/formatCurrency';
 import { useShopContext } from '../../context/ShopContext';
+
 const Productdisplay = (props) => {
   const { product } = props;
   const { addToCart } = useShopContext();
   const boxRef = useRef(null);
-
+  
   const StockStatus = ({ quantity }) => {
     if (quantity === 0) return <span style={{ color: "red", fontSize: "20px", fontWeight: 650 }}>Out of Stock</span>;
     if (quantity <= 10)

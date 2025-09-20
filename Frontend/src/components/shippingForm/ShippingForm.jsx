@@ -8,6 +8,7 @@ import { useEffect } from "react";
 const ShippingForm = ({ onClose, addressData, isEdit }) => {
   const { register, reset, handleSubmit, formState: { errors } } = useForm();
   const { user, getAddresses } = useAuth();
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   useEffect(() => {
     if (isEdit) {
@@ -20,9 +21,9 @@ const ShippingForm = ({ onClose, addressData, isEdit }) => {
   const onSubmit = async (data) => {
     try {
       if (isEdit) {
-        await axios.put(`http://localhost:4000/user/${user._id}/updateaddress/${addressData._id}`, data);
+        await axios.put(`${BASE_URL}user/${user._id}/updateaddress/${addressData._id}`, data);
       } else {
-        await axios.post(`http://localhost:4000/user/${user._id}/addaddress`, data);
+        await axios.post(`${BASE_URL}user/${user._id}/addaddress`, data);
       }
       getAddresses();
       onClose();

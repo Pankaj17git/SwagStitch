@@ -38,6 +38,12 @@ const Sidebar = () => {
             <p>Orders List</p>
           </div>
         </Link>
+        <Link to={'/admin/settings'} style={{ textDecoration: "none" }}>
+          <div className="sidebar-item">
+            <i className='bx bx-shopping-bag-alt' style={{ color: '#b1dbb1ff' }}></i>
+            <p>Settings</p>
+          </div>
+        </Link>
       </div>
     </>
   )

@@ -1,36 +1,63 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
 import { Link } from "react-router";
-
-const statsData = [
-  {
-    icon: "bx-dollar-circle",
-    color: "#27891f",
-    label: "Total Sales",
-    value: "45,231.89"
-  },
-  {
-    icon: "bx-user-hexagon",
-    color: "#307af8",
-    label: "Total Users",
-    value: "2,350"
-  },
-  {
-    icon: "bx-hourglass",
-    color: "#daf830ff",
-    label: "Pending Orders",
-    value: "128"
-  },
-  {
-    icon: "bx-store",
-    color: "#f8304bff",
-    label: "Total Products",
-    value: "5,678"
-  }
-];
-
+import { useShopContext } from "../../../context/ShopContext";
+import axios from "axios";
+import { useAuth } from "../../../context/AuthContext";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Dashboard = () => {
+  const [ordersDetail, setOrderDetail] = useState([]);
+  const { all_product } = useShopContext();
+  const { customer } = useAuth();
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}order/admin`);
+        setOrderDetail(res.data.orders);
+      } catch (error) {
+        console.error("Something went wrong!", error);
+      }
+    }
+    fetchOrders();
+  }, []);
+
+  let pendingOrders = ordersDetail.filter(order => order.status === "pending")
+  const totalOrderAmount = ordersDetail.map(order => {
+    return order.total
+  });
+
+  let totalSale = totalOrderAmount.reduce((acc, current) => acc + current, 0);
+
+  const statsData = [
+    {
+      icon: "bx-dollar-circle",
+      color: "#27891f",
+      label: "Total Sales",
+      value: `₹${totalSale}`
+    },
+    {
+      icon: "bx-user-hexagon",
+      color: "#307af8",
+      label: "Total Users",
+      value: customer.length
+    },
+    {
+      icon: "bx-hourglass",
+      color: "#daf830ff",
+      label: "Pending Orders",
+      value: pendingOrders.length
+    },
+    {
+      icon: "bx-store",
+      color: "#f8304bff",
+      label: "Total Products",
+      value: all_product.length
+    }
+  ];
+
+
   return (
     <div className="dashboard">
       <main className="dashboard-main">
@@ -71,36 +98,34 @@ const Dashboard = () => {
           <div className="product-list">
             <div className="product-item">
               <img
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdsmXA2q_N1XjkJvUdZLt8xdP_yMGgPLL-zjwkoX8ZaWSHervjnoAvbD5zg6AKVmzBdXsTrgkPFkxuHFM9TGAawv15n8lTl60D7Xdcja4hBNkUyAa7Q0hP0D7TiQsNCi1863zzVfq7dc4z0ak-qKcegKC-BHsTenVP93ErBtdZ6SMT8tSjjufLpMdECaFysL17wPpnYIdqy_IAbyE03oF4M0aSjvZiKz6VHkWkuZwB0xLAVwkYhzcQJBwykr-lDDPvb1VEwysxkQ"
+                src={`${BASE_URL}images/product_1756444364862.png`}
                 alt="Running Shoes"
               />
               <div className="product-info">
-                <p className="product-name">Running Shoes</p>
+                <p className="product-name">Slim Fit Bomber Jacket</p>
                 <p className="small-text">2,104 sold</p>
               </div>
-              <p className="product-price">$12,500</p>
+              <p className="product-price">₹4,500</p>
             </div>
             <div className="product-item">
               <img
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-TzpMg6gutTyNBdHUW29jFEWiDGQrMvlGqq5Ed5S8RdgTiEslJ0GwrhjeiPGPwxtl0JyaaQ4UnjvCrMMdl91mWmCCPpLLniYXNO__B0hKahfGz7lsJzTgldwZKnr07NmRLwV0tjD6Zy1DLXznVWTbbw7sEbskuUzC-9cflHU_Da-tHw0E2DQN64Ch9drAyBAOfOS8Zu3Dq9dk49tgLHXYKsWtpI0E2NG2QzkY16r6oS3HrswOeKEZVWAcWYkRq6N4D-Kl9k1vAg"
-                alt="Vintage Camera"
+                src={`${BASE_URL}images/product_1756443735800.png`}
               />
               <div className="product-info">
-                <p className="product-name">Vintage Camera</p>
+                <p className="product-name">Collar Peplum Hem Blouse</p>
                 <p className="small-text">1,897 sold</p>
               </div>
-              <p className="product-price">$11,200</p>
+              <p className="product-price">₹5,200</p>
             </div>
             <div className="product-item">
               <img
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4APCodKYW-hznMIRGBL_xk8w59aeuj9U2S7LTwHdxic3heeNXwUJraFa4zZ2XCTYYR8PcZcVgj51xSKG_pwY7gQ0mUzgFCZQ2OqXa8ufAIrGZ3UFzzm6DM2vMQmuHKFrSFg0QJM0QfnbThqkbCCV78HZEXiRn1xtyK2Z6jmXAp8UORZSfr2Cp0ie5RXC-Zq29_EwMQ_cfXP0RLx1IUpdq1EZPd0H295c7gKfsJZcmjxBY68ROggIYtpWxfN14-tm3q6zLVQwx2Q"
-                alt="Wireless Headphones"
+                src={`${BASE_URL}images/product_1756444120305.png`}
               />
               <div className="product-info">
-                <p className="product-name">Wireless Headphones</p>
+                <p className="product-name">Collar Peplum Hem Blouse</p>
                 <p className="small-text">1,543 sold</p>
               </div>
-              <p className="product-price">$9,800</p>
+              <p className="product-price">₹4,800</p>
             </div>
           </div>
         </section>

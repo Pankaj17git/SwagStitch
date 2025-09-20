@@ -25,6 +25,7 @@ const CheckoutSection = () => {
   const [isEditAddress, setEditAddress] = useState(false);
   const { addresses, user, getAddresses, setDeliveryAddress } = useAuth();
   const { setDeliveryCharge, deliveryCharge } = useShopContext()
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   // State for delivery method
   const [deliveryMethod, setDeliveryMethod] = useState("standard");
@@ -43,7 +44,7 @@ const CheckoutSection = () => {
   }
 
   const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:4000/user/${user._id}/removeaddress/${id}`);
+    await axios.delete(`${BASE_URL}user/${user._id}/removeaddress/${id}`);
     alert('address deleted Successfully!');
     await getAddresses();
   }

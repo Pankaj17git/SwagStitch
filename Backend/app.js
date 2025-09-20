@@ -6,7 +6,8 @@ const productRoute = require('./routes/product.route');
 const userRoute = require('./routes/user.route');
 const uploadRoute = require('./routes/upload.route');
 const cartRoute = require('./routes/cart.route');
-const orderRoute = require('./routes/order.route')
+const orderRoute = require('./routes/order.route');
+const settings = require('./routes/settings.routes')
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use('/cart', cartRoute);
 app.use('/user', userRoute);
 app.use('/order', orderRoute);
 app.use('/upload', uploadRoute);
+app.use('/settings', settings)
 
 module.exports = app;
 

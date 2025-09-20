@@ -20,6 +20,7 @@ const OrderDetails = () => {
   if (!all_product.length || !product) {
     return <p>Loading order details...</p>;
   }
+
   const orderItems = product.items.map(itm => {
     const item = all_product.find(p => p.id === itm.productId);
     return {
@@ -31,10 +32,8 @@ const OrderDetails = () => {
   })
 
 
-
-
   return (
-    <main className="container">
+    <main className="main-container">
       <div className="page">
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" className="breadcrumb">

@@ -9,12 +9,14 @@ import PaymentMethodRow from './PaymentMethodRow';
 import axios from 'axios';
 
 
+
 const PaymentSection = () => {
   const [active, setActive] = useState(null);
   const { user, addresses, deliveryAddress, setDeliveryAddress } = useAuth();
   const { setPaymentMethod, paymentMethod,
-  getTotalOrderAmount, getTotalCartAmount,
-  deliveryCharge, cartItemDetail, cleanUp } = useShopContext();
+    getTotalOrderAmount, getTotalCartAmount,
+    deliveryCharge, cartItemDetail, cleanUp } = useShopContext();
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   const address = deliveryAddress !== null ? deliveryAddress : addresses[0];
 
@@ -42,11 +44,11 @@ const PaymentSection = () => {
         paymentmethod: paymentMethod,
       }
 
-      await axios.post('http://localhost:4000/order', newOrder)
+      await axios.post(`${BASE_URL}order`, newOrder)
 
       alert('orderPlaced successfully!')
 
-      await axios.patch('http://localhost:4000/cart/clearcart', { id: user._id })
+      await axios.patch(`${BASE_URL}cart/clearcart`, { id: user._id })
       cleanUp();
 
     } catch (error) {

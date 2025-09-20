@@ -8,14 +8,15 @@ const LoginSignUp = () => {
   const [state, setState] = useState("Sign Up");
   const { authLogin } = useAuth();
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 
   // Handle form submission 
   const onSubmit = async (data) => {
     let responseData;
     const url = state === "Login"
-      ? 'http://localhost:4000/user/login'
-      : 'http://localhost:4000/user/signup';
+      ? `${BASE_URL}user/login`
+      : `${BASE_URL}user/signup`;
 
     await fetch(url, {
       method: 'POST',
