@@ -29,49 +29,27 @@ jobs:
         working-directory: ./Frontend
         run: npm run build
 
-      # 4️⃣ Upload Frontend via SFTP
-      - name: Upload Frontend
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          # host: ${{ secrets.SFTP_HOST }}
-          # username: ${{ secrets.SFTP_USER }}
-          # password: ${{ secrets.SFTP_PASSWORD }}
-          host: "209.46.122.155"
-          username: "pankaj-choudhary"
-          password: "049owH9i&"
-          port: 22
-          source: ./Frontend/dist/
-          target: /var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/Frontend/
+      # 4️⃣ Sync Frontend using rsync over SSH
+      - name: Sync Frontend
+        env:
+          SSH_PASS: ${{ secrets.SFTP_PASSWORD }}
+        run: |
+          rsync -avz --delete -e "ssh -p 22" ./Frontend/dist/ ${{ secrets.SFTP_USER }}@${{ secrets.SFTP_HOST }}:/var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/Frontend/
 
-      # 5️⃣ Upload Backend via SFTP
-      - name: Upload Backend
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          # host: ${{ secrets.SFTP_HOST }}
-          # username: ${{ secrets.SFTP_USER }}
-          # password: ${{ secrets.SFTP_PASSWORD }}
-          host: "209.46.122.155"
-          username: "pankaj-choudhary"
-          password: "049owH9i&"
-          port: 22
-          source: ./Backend/
-          target: /var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/Backend/
-          exclude: |
-            node_modules
-            .git
-            .github
-            deploy.sh
+      # 5️⃣ Sync Backend using rsync over SSH
+      - name: Sync Backend
+        env:
+          SSH_PASS: ${{ secrets.SFTP_PASSWORD }}
+        run: |
+          rsync -avz --exclude 'node_modules' --exclude '.git' --exclude '.github' -e "ssh -p 22" ./Backend/ ${{ secrets.SFTP_USER }}@${{ secrets.SFTP_HOST }}:/var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/Backend/
 
-      # 6️⃣ Run deploy.sh on server
+      # 6️⃣ Run deploy.sh on server via SSH
       - name: Run deploy.sh
         uses: appleboy/ssh-action@v0.1.7
         with:
-          # host: ${{ secrets.SFTP_HOST }}
-          # username: ${{ secrets.SFTP_USER }}
-          # password: ${{ secrets.SFTP_PASSWORD }}
-          host: "209.46.122.155"
-          username: "pankaj-choudhary"
-          password: "049owH9i&"
+          host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USER }}
+          password: ${{ secrets.SFTP_PASSWORD }}
           port: 22
           script: |
             cd /var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/
