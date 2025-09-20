@@ -33,9 +33,12 @@ jobs:
       - name: Upload Frontend
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.SFTP_HOST }}
-          username: ${{ secrets.SFTP_USER }}
-          password: ${{ secrets.SFTP_PASSWORD }}
+          # host: ${{ secrets.SFTP_HOST }}
+          # username: ${{ secrets.SFTP_USER }}
+          # password: ${{ secrets.SFTP_PASSWORD }}
+          host: "209.46.122.155"
+          username: "pankaj-choudhary"
+          password: "049owH9i&"
           port: 22
           source: ./Frontend/dist/
           target: /var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/Frontend/
@@ -44,9 +47,12 @@ jobs:
       - name: Upload Backend
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.SFTP_HOST }}
-          username: ${{ secrets.SFTP_USER }}
-          password: ${{ secrets.SFTP_PASSWORD }}
+          # host: ${{ secrets.SFTP_HOST }}
+          # username: ${{ secrets.SFTP_USER }}
+          # password: ${{ secrets.SFTP_PASSWORD }}
+          host: "209.46.122.155"
+          username: "pankaj-choudhary"
+          password: "049owH9i&"
           port: 22
           source: ./Backend/
           target: /var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/Backend/
@@ -60,9 +66,12 @@ jobs:
       - name: Run deploy.sh
         uses: appleboy/ssh-action@v0.1.7
         with:
-          host: ${{ secrets.SFTP_HOST }}
-          username: ${{ secrets.SFTP_USER }}
-          password: ${{ secrets.SFTP_PASSWORD }}
+          # host: ${{ secrets.SFTP_HOST }}
+          # username: ${{ secrets.SFTP_USER }}
+          # password: ${{ secrets.SFTP_PASSWORD }}
+          host: "209.46.122.155"
+          username: "pankaj-choudhary"
+          password: "049owH9i&"
           port: 22
           script: |
             cd /var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/
