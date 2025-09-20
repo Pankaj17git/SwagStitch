@@ -176,21 +176,21 @@ jobs:
       - name: Sync Frontend
         run: |
           rsync -avz --delete -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -p 22" \
-          ./Frontend/dist/ swagdeploy@${{ secrets.SFTP_HOST }}:/var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/Frontend/
+          ./Frontend/dist/ pankaj-choudhary@${{ secrets.SFTP_HOST }}:/var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/Frontend/
 
       # 7️⃣ Sync Backend using rsync over SSH
       - name: Sync Backend
         run: |
           rsync -avz --exclude 'node_modules' --exclude '.git' --exclude '.github' \
           -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -p 22" \
-          ./Backend/ swagdeploy@${{ secrets.SFTP_HOST }}:/var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/Backend/
+          ./Backend/ pankaj-choudhary@${{ secrets.SFTP_HOST }}:/var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/Backend/
 
       # 8️⃣ Run deploy.sh on server via SSH
       - name: Run deploy.sh
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.SFTP_HOST }}
-          username: swagdeploy
+          username: pankaj-choudhary
           key: ${{ secrets.SFTP_PRIVATE_KEY }}
           port: 22
           script: |
