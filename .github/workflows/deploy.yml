@@ -33,31 +33,36 @@ jobs:
       - name: Upload Frontend
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASSWORD }}
+          host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USER }}
+          password: ${{ secrets.SFTP_PASSWORD }}
           port: 22
-          source: "./Frontend/dist/"
-          target: "/var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/Frontend/"
+          source: ./Frontend/dist/
+          target: /var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/Frontend/
 
       # 5️⃣ Upload Backend via SFTP
       - name: Upload Backend
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASSWORD }}
+          host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USER }}
+          password: ${{ secrets.SFTP_PASSWORD }}
           port: 22
-          source: "./Backend/"
-          target: "/var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/Backend/"
+          source: ./Backend/
+          target: /var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/Backend/
+          exclude: |
+            node_modules
+            .git
+            .github
+            deploy.sh
 
       # 6️⃣ Run deploy.sh on server
       - name: Run deploy.sh
         uses: appleboy/ssh-action@v0.1.7
         with:
-          host: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASSWORD }}
+          host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USER }}
+          password: ${{ secrets.SFTP_PASSWORD }}
           port: 22
           script: |
             cd /var/www/vhosts/dhimansoft.com/swag-stitch.dhimansoft.com/
