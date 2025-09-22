@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom"; 
 import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 const ProtectedUserRoutes = ({ children }) => {
   const { user } = useAuth();
@@ -8,7 +9,7 @@ const ProtectedUserRoutes = ({ children }) => {
 
   useEffect(() => {
     if (!user) {
-      alert("Please Login first!");
+      toast.error("Please Login first!");
       setTimeout(() => {
         navigate("/login");
       }, 300); 

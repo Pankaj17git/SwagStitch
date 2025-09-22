@@ -7,6 +7,7 @@ import AddressSummary from './AddressSummary';
 import PaymentCard from './PaymentCard';
 import PaymentMethodRow from './PaymentMethodRow';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 
@@ -32,7 +33,7 @@ const PaymentSection = () => {
 
   const handleSubmit = async () => {
     try {
-      if (!user) return alert("please Login First!")
+      if (!user) return toast.error("please Login First!")
 
       const newOrder = {
         userId: user._id,
@@ -46,13 +47,13 @@ const PaymentSection = () => {
 
       await axios.post(`${BASE_URL}order`, newOrder)
 
-      alert('orderPlaced successfully!')
+      toast.success('orderPlaced successfully!')
 
       await axios.patch(`${BASE_URL}cart/clearcart`, { id: user._id })
       cleanUp();
 
     } catch (error) {
-      alert("Unable to process the request", error)
+      toast.error("Unable to process the request", error)
     }
   }
 

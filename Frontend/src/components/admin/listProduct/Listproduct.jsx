@@ -5,6 +5,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import UpgradeIcon from '@mui/icons-material/Upgrade';
 import CloseIcon from '@mui/icons-material/Close';
 import { IconButton } from "@mui/material";
+import axios from "axios";
 
 const StockStatus = ({ quantity }) => {
   if (quantity === 0) return <span style={{ color: "red" }}>Out of Stock</span>;
@@ -36,10 +37,9 @@ const ListProduct = () => {
   }, [allproducts]);
 
   const removeProduct = async (id) => {
+
     try {
-      await fetch(`${BASE_URL}products/removeproduct/${id}`, {
-        method: "DELETE",
-      });
+      await axios.delete(`${BASE_URL}products/removeproduct/${id}`);
       setAllProducts((prev) => prev.filter((p) => p._id !== id));
     } catch (error) {
       console.error("Error removing product:", error);
@@ -103,7 +103,7 @@ const ListProduct = () => {
               <p>${product.new_price}</p>
               <p>{product.category}</p>
 
-              {/* 🔹 Quantity column */}
+              {/* Quantity column */}
               <div style={{ display: "flex", alignItems: "center", gap: "5px", justifyContent: 'center' }}>
                 {editProductId === product._id ? (
                   <>

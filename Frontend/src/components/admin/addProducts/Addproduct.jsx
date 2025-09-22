@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import './Addproduct.css'
+import { toast } from 'react-toastify';
 
 const Addproduct = () => {
   const [image, setImage] = useState(false);
@@ -48,7 +49,7 @@ const Addproduct = () => {
         },
         body: JSON.stringify(product),
       }).then((res) => res.json()).then((data) => {
-        data.success ? alert("Product Added") : alert("Failed")
+        data.success ? toast.success("Product Added") : toast.error("Failed")
       })
     }
   }

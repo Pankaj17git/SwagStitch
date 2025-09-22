@@ -16,4 +16,7 @@ main {
   .admin {
     flex-direction: column;
   }
+  .container {
+    flex-direction: column;
+  }
 }

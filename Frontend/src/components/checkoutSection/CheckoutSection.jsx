@@ -10,13 +10,8 @@ import { useAuth } from '../../context/AuthContext'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios'
+import {toast} from 'react-toastify'
 import { useShopContext } from '../../context/ShopContext'
-
-const DELIVERY_OPTIONS = {
-  standard: { label: "Standard", charge: 0 },
-  express: { label: "Express", charge: 80 },
-  sameDay: { label: "Same Day", charge: 120 },
-};
 
 
 const CheckoutSection = () => {
@@ -24,8 +19,14 @@ const CheckoutSection = () => {
   const [editAddressData, setEditAddressData] = useState();
   const [isEditAddress, setEditAddress] = useState(false);
   const { addresses, user, getAddresses, setDeliveryAddress } = useAuth();
-  const { setDeliveryCharge, deliveryCharge } = useShopContext()
+  const { setDeliveryCharge, deliveryCharge, extraCharges } = useShopContext()
   const BASE_URL = import.meta.env.VITE_BASE_URL;
+
+  const DELIVERY_OPTIONS = {
+    standard: { label: "Standard", charge: 0 },
+    express: { label: "Express", charge: extraCharges?.shippingCharge },
+    sameDay: { label: "Same Day", charge: extraCharges?.freeShippingThreshold },
+  };
 
   // State for delivery method
   const [deliveryMethod, setDeliveryMethod] = useState("standard");
@@ -33,7 +34,7 @@ const CheckoutSection = () => {
   useEffect(() => {
     setDeliveryCharge(DELIVERY_OPTIONS[deliveryMethod].charge);
   }, [deliveryMethod, setDeliveryCharge]);
-  
+
   // Handle delivery method change
   const handleDeliveryChange = (e) => {
     setDeliveryMethod(e.target.value);
@@ -45,7 +46,7 @@ const CheckoutSection = () => {
 
   const handleDelete = async (id) => {
     await axios.delete(`${BASE_URL}user/${user._id}/removeaddress/${id}`);
-    alert('address deleted Successfully!');
+    toast.success('address deleted Successfully!');
     await getAddresses();
   }
 
@@ -116,7 +117,7 @@ const CheckoutSection = () => {
                     checked={deliveryMethod === "express"}
                     onChange={handleDeliveryChange}
                   />
-                  Express Delivery (1-2 Days) - ₹80
+                  Express Delivery (1-2 Days) - ₹{extraCharges?.shippingCharge}
                 </label>
                 <label>
                   <input
@@ -125,7 +126,7 @@ const CheckoutSection = () => {
                     checked={deliveryMethod === "sameDay"}
                     onChange={handleDeliveryChange}
                   />
-                  Same Day Delivery - ₹120
+                  Same Day Delivery - ₹{extraCharges?.freeShippingThreshold}
                 </label>
               </div>
 

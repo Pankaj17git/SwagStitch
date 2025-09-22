@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import {toast} from 'react-toastify'
 import "./AdminSettings.css";
 
 const AdminSettings = () => {
@@ -20,21 +21,27 @@ const AdminSettings = () => {
       }
     };
     fetchSettings();
-  }, []);
+  }, [loading]);
 
 
   const handleChange = (e, path) => {
-    const value = e.target.type === "number" ? Number(e.target.value) : e.target.value;
-    setSettings((prev) => {
-      const updated = { ...prev };
-      const keys = path.split(".");
-      let ref = updated;
-      for (let i = 0; i < keys.length - 1; i++) {
-        ref = ref[keys[i]];
+      let value;
+      if (path === "tax.gst") {
+        // GST input is percentage, so divide by 100 if not empty
+        value = e.target.value === "" ? "" : Number(e.target.value) / 100;
+      } else {
+        value = e.target.type === "number" ? (e.target.value === "" ? "" : Number(e.target.value)) : e.target.value;
       }
-      ref[keys[keys.length - 1]] = value;
-      return updated;
-    });
+      setSettings((prev) => {
+        const updated = { ...prev };
+        const keys = path.split(".");
+        let ref = updated;
+        for (let i = 0; i < keys.length - 1; i++) {
+          ref = ref[keys[i]];
+        }
+        ref[keys[keys.length - 1]] = value;
+        return updated;
+      });
   };
 
   const addDiscountRule = () => {
@@ -62,10 +69,10 @@ const AdminSettings = () => {
   const saveSettings = async () => {
     try {
       await axios.put(`${BASE_URL}settings`, settings);
-      alert("Settings updated successfully!");
+      toast("Settings updated successfully!");
     } catch (err) {
       console.error("Error saving settings:", err);
-      alert("Failed to update settings.");
+      toast("Failed to update settings.");
     }
   };
 
@@ -107,12 +114,17 @@ const AdminSettings = () => {
       <section>
         <h3>Tax Settings</h3>
         <label>
-          GST (%):{" "}
-          <input
-            type="number"
-            value={settings.tax?.gst * 100 || 0}
-            onChange={(e) => handleChange(e, "tax.gst")}
-          />
+            GST (%):{" "}
+            <input
+              type="number"
+              value={
+                settings.tax?.gst === undefined || settings.tax?.gst === ""
+                  ? ""
+                  : settings.tax.gst * 100
+              }
+              onChange={(e) => handleChange(e, "tax.gst")}
+              placeholder="GST %"
+            />
         </label>
       </section>
 

@@ -7,9 +7,9 @@ import { useNavigate } from 'react-router'
 const BillingDetails = (props) => {
   const navigate = useNavigate()
 
-  const { getTotalCartAmount, getTotalOrderAmount, deliveryCharge } = useShopContext();
+  const { getTotalCartAmount, getTotalOrderAmount, deliveryCharge, extraCharges } = useShopContext();
   const subTotal = getTotalCartAmount;
-  const discountResult = useMemo(() => getDiscount(subTotal),[subTotal]) 
+  const discountResult = useMemo(() => getDiscount(subTotal, extraCharges?.discountRules),[subTotal]) 
   const handleCheckout = () => {
     if (props.onClick && props.path === "payment") {
       props.onClick();

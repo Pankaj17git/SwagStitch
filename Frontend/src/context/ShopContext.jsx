@@ -19,6 +19,7 @@ const ShopContexProvider = (props) => {
   const [cartItems, setCartItems] = useState(getDefaultCart());
   const [order, setOrder] = useState([]);
   const [deliveryCharge, setDeliveryCharge] = useState(0);
+  const [extraCharges, setExtraCharges] = useState();
   const [paymentMethod, setPaymentMethod] = useState("COD");
   const { user } = useAuth();
 
@@ -36,6 +37,21 @@ const ShopContexProvider = (props) => {
       }));
   }, [all_product, cartItems]);
 
+  
+  useEffect(() => {
+    const fetchCharges = async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}settings`)
+        setExtraCharges(res.data)
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchCharges();
+  },[])
+
+  
 
   useEffect(() => {
     const fetchProductsAndCart = async () => {
@@ -120,7 +136,7 @@ const ShopContexProvider = (props) => {
 
   const getTotalOrderAmount = useMemo(() => {
     const subTotal = getTotalCartAmount;
-    const discountResult = getDiscount(subTotal);
+    const discountResult = getDiscount(subTotal, extraCharges?.discountRules);
     return discountResult.discountedPrice + deliveryCharge;
   }, [getTotalCartAmount, deliveryCharge]);
 
@@ -143,7 +159,7 @@ const ShopContexProvider = (props) => {
     paymentMethod,
     setPaymentMethod,
     cartItemDetail,
-    cleanUp
+    cleanUp,extraCharges
   };
 
   return (

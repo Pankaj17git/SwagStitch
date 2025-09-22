@@ -4,6 +4,9 @@ import './index.css'
 import App from './App.jsx'
 import { ShopContexProvider } from './context/ShopContext.jsx'
 import { AuthProvider } from './context/AuthContext.jsx'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
+
 
 
 createRoot(document.getElementById('root')).render(
@@ -11,6 +14,7 @@ createRoot(document.getElementById('root')).render(
     <AuthProvider>
       <ShopContexProvider>
         <App />
+        <ToastContainer position="top-right" autoClose={3000} />
       </ShopContexProvider>
     </AuthProvider>
   </StrictMode>,

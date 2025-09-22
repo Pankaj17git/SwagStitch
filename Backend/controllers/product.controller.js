@@ -45,15 +45,18 @@ const addProduct = async (req, res) => {
 
 const removeProduct = async (req, res) => {
   try {
-    const deletedProduct = await Product.findOneAndDelete({ id: req.params.id });
+    const { id } = req.params;  
+    const deletedProduct = await Product.findByIdAndDelete(id);
     if (!deletedProduct) {
       return res.status(404).json({ message: "Product not found" });
     }
+
     res.json({ message: "Deleted successfully", product: deletedProduct });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-}
+};
+
 
 const getNewCollections = async (req, res) => {
   try {
@@ -81,12 +84,12 @@ const updateProductQuantity = async (req, res) => {
       return res.status(404).json({ message: "Product not found!" });
     }
 
-    product.quantity += quantity;                     
-    await product.save();                            
+    product.quantity += quantity;
+    await product.save();
 
     res.json({ message: `Product with ID ${productId} updated`, updatedQuantity: product.quantity });
   } catch (error) {
-   
+
   }
 };
 
